@@ -127,9 +127,11 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 }
 .menu[open] { display: flex; animation: slide-in .35s var(--ease); }
 .menu::backdrop { background: rgb(11 29 74 / .45); backdrop-filter: blur(3px); }
+/* con menu o lightbox aperti la pagina sotto resta ferma: si scorre solo il menu */
+html:has(dialog[open]) { overflow: hidden; scrollbar-gutter: stable; }
 .menu-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 18px 28px; border-bottom: 1px solid rgb(255 255 255 / .12); }
 .menu-home { display: inline-flex; align-items: center; gap: .5em; color: var(--yellow); text-decoration: none; font-weight: 600; }
-.menu-list { overflow-y: auto; padding: 10px 0 28px; counter-reset: m; }
+.menu-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 10px 0 28px; counter-reset: m; }
 .menu-list a {
   display: grid; grid-template-columns: 2.4em 1fr; grid-template-rows: auto auto; column-gap: 8px;
   padding: 12px 28px; text-decoration: none; transition: background .2s;
