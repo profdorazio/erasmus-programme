@@ -448,7 +448,7 @@ def render_map(mobs: list[dict]) -> str:
     for k, g in enumerate(groups):
         items = sorted(g["items"], key=lambda m: m["start"])
         left, top = g["x"] / w * 100, g["y"] / h * 100
-        pos = ["pop-below" if top < 38 else "pop-above"]
+        pos = ["pop-below" if (g["y"] - crop_y) / crop_h < 0.38 else "pop-above"]
         if left < 22:
             pos.append("pop-right")
         elif left > 78:
@@ -484,12 +484,23 @@ def render_map(mobs: list[dict]) -> str:
 
     hl, ht = hx / w * 100, hy / h * 100
     countries = len(visited)
-    return f"""<div class="map-wrap reveal" data-map-wrap>
+    return f"""<div class="map-wrap reveal" data-map-wrap style="--ar:{w:g}/{h:g};--vw:{w:g};--vh:{h:.1f};--cy:{crop_y:.1f};--ch:{crop_h:.1f}">
       {PUSHPIN_SYMBOL}
-      <div class="map" style="--ar:{w:g}/{h:g};--vh:{h:.1f};--cy:{crop_y:.1f};--ch:{crop_h:.1f}" data-map data-focus="{focus_x:.3f}">
-        <div class="map-stage">
-          <img class="map-base" src="assets/img/europe.svg?v={VERSION}" alt="" width="{w:g}" height="{h:g}">
-          <svg class="map-over" viewBox="0 0 {w:g} {h:g}" aria-hidden="true">{graticule()}{shapes}<g class="map-routes">{''.join(routes)}</g></svg>
+      <div class="section-head">
+        <div>
+          <h2 id="map-title">La mappa</h2>
+        </div>
+        <p class="hint">Passa sopra un segnaposto per l'anteprima, clicca per aprire la mobilità.</p>
+      </div>
+      <div class="map-frame">
+      <div class="map" data-map data-focus="{focus_x:.3f}">
+        <div class="map-clip">
+          <div class="map-stage">
+            <img class="map-base" src="assets/img/europe.svg?v={VERSION}" alt="" width="{w:g}" height="{h:g}">
+            <svg class="map-over" viewBox="0 0 {w:g} {h:g}" aria-hidden="true">{graticule()}{shapes}<g class="map-routes">{''.join(routes)}</g></svg>
+          </div>
+        </div>
+        <div class="map-stage map-pins">
           <div class="home-pin" style="left:{hl:.2f}%;top:{ht:.2f}%"><span class="home-dot" aria-hidden="true"></span><span class="pin-label">{e(home['name'])}</span></div>
           {''.join(pins)}
         </div>
@@ -500,6 +511,7 @@ def render_map(mobs: list[dict]) -> str:
         <li><span class="lg-pin"></span>{len(mobs)} mobilità</li>
         <li><span class="lg-country"></span>{countries} paesi visitati</li>
       </ul>
+      </div>
     </div>"""
 
 
@@ -583,12 +595,6 @@ def render_index(mobs: list[dict]) -> str:
 
   <section class="section map-section" id="mappa" aria-labelledby="map-title">
     <div class="wrap">
-      <div class="section-head">
-        <div>
-          <h2 id="map-title">La mappa</h2>
-        </div>
-        <p class="hint">Passa sopra un segnaposto per l'anteprima, clicca per aprire la mobilità.</p>
-      </div>
       {render_map(mobs)}
     </div>
   </section>

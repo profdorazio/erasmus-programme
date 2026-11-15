@@ -405,10 +405,16 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 .story-photo.is-illustration img { object-fit: contain; background: #fff; padding: 8%; }
 
 /* ---------------------------------------------------------------- mappa */
-.map-section { padding-bottom: 0; }
-.map-wrap { position: relative; }
+.map-section { padding-top: clamp(40px, 5vw, 64px); padding-bottom: 0; }
+/* titolo + mappa entrano insieme nello schermo: la larghezza dipende dall'altezza disponibile */
+.map-wrap {
+  position: relative; margin-inline: auto;
+  width: min(100%, calc((100svh - var(--header-h) - 200px) * var(--vw) / var(--ch)));
+}
+.map-wrap .section-head { margin-bottom: 20px; }
+.map-frame { position: relative; }
 .map {
-  position: relative; aspect-ratio: var(--ar);
+  position: relative; aspect-ratio: calc(var(--vw) / var(--ch));
   background: radial-gradient(130% 100% at 55% 45%, #e6edfb 0%, #d5e0f6 70%, #c9d6f1 100%);
   border-radius: var(--radius); box-shadow: var(--shadow);
 }
@@ -417,10 +423,18 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   box-shadow: inset 0 0 60px 10px rgb(201 214 241 / .9), inset 0 0 0 1px rgb(11 29 74 / .06);
 }
-.map-stage { position: absolute; inset: 0; }
-.map-base, .map-over { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: var(--radius); }
+.map-clip { position: absolute; inset: 0; overflow: hidden; border-radius: var(--radius); }
+.map-stage {
+  position: absolute; left: 0; width: 100%;
+  top: calc(var(--cy) / var(--ch) * -100%);
+  height: calc(var(--vh) / var(--ch) * 100%);
+}
+.map-pins { pointer-events: none; }
+.map-pins > * { pointer-events: auto; }
+.home-pin { pointer-events: none !important; }
+.map-base, .map-over { position: absolute; inset: 0; width: 100%; height: 100%; }
 .map-base { filter: drop-shadow(0 1.5px 0 rgb(31 68 184 / .16)) drop-shadow(0 6px 10px rgb(11 29 74 / .08)); }
-.map-over { pointer-events: none; overflow: hidden; clip-path: inset(0 round var(--radius)); }
+.map-over { pointer-events: none; overflow: hidden; }
 .map-grid { fill: none; stroke: #fff; stroke-width: .7; opacity: .55; }
 .map-visited { fill: #c3d1f7; stroke: var(--blue); stroke-width: .7; stroke-linejoin: round; }
 .map-home { fill: #ffe79a; stroke: #c99a00; stroke-width: .7; stroke-linejoin: round; }
@@ -536,6 +550,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 /* ---------------------------------------------------------------- mappa: mobile */
 @media (max-width: 680px) {
   /* mappa più alta, ritagliata sulla fascia delle mobilità, scorrevole in orizzontale */
+  .map-wrap { width: auto; }
   .map {
     aspect-ratio: auto; height: min(64svh, 520px);
     margin-inline: calc(var(--gutter) * -1); border-radius: 0; box-shadow: none;
@@ -544,18 +559,13 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   }
   .map::-webkit-scrollbar { display: none; }
   .map::after { display: none; }
-  .map-stage {
-    inset: auto; left: 0;
-    top: calc(var(--cy) / var(--ch) * -100%);
-    height: calc(var(--vh) / var(--ch) * 100%);
-    aspect-ratio: var(--ar);
+  .map-clip { position: static; overflow: visible; border-radius: 0; }
+  .map-stage { width: auto; aspect-ratio: var(--ar); }
+  .map-frame::before, .map-frame::after { /* sfumature laterali che suggeriscono lo scorrimento */
+    content: ""; position: absolute; top: 0; height: min(64svh, 520px); z-index: 4; width: 28px; pointer-events: none;
   }
-  .map-base, .map-over { border-radius: 0; clip-path: none; }
-  .map-wrap::before, .map-wrap::after { /* sfumature laterali che suggeriscono lo scorrimento */
-    content: ""; position: absolute; top: 0; z-index: 4; width: 28px; height: min(64svh, 520px); pointer-events: none;
-  }
-  .map-wrap::before { left: calc(var(--gutter) * -1); background: linear-gradient(90deg, #d5e0f6, transparent); }
-  .map-wrap::after { right: calc(var(--gutter) * -1); background: linear-gradient(-90deg, #d5e0f6, transparent); }
+  .map-frame::before { left: calc(var(--gutter) * -1); background: linear-gradient(90deg, #d5e0f6, transparent); }
+  .map-frame::after { right: calc(var(--gutter) * -1); background: linear-gradient(-90deg, #d5e0f6, transparent); }
 
   .pin-label { font-size: .7rem; left: 30px; }
   .label-left .pin-label { right: 30px; }
