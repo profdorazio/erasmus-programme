@@ -328,7 +328,7 @@ def footer(prefix: str, mobs: list[dict]) -> str:
     </div>
     <div class="footer-bottom">
       <p>© {year} {e(SITE['school'])} · Progetto Erasmus+</p>
-      <p class="credit">Design by <img src="{prefix}assets/img/11studio-white.png" alt="11 studio" width="480" height="79" loading="lazy"></p>
+      <p class="credit">Design by <a href="https://11-studio.it" target="_blank" rel="noopener" aria-label="11 studio (si apre in una nuova scheda)"><img src="{prefix}assets/img/11studio-white.png" alt="11 studio" width="480" height="79" loading="lazy"></a></p>
     </div>
   </div>
 </footer>
