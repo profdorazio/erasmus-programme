@@ -406,10 +406,11 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 
 /* ---------------------------------------------------------------- mappa */
 .map-section { padding-top: clamp(40px, 5vw, 64px); padding-bottom: 0; }
-/* titolo + mappa entrano insieme nello schermo: la larghezza dipende dall'altezza disponibile */
+/* la mappa entra nello schermo (larghezza calcolata sull'altezza disponibile),
+   ma non scende mai sotto i 900px, così su schermi bassi non diventa minuscola */
 .map-wrap {
   position: relative; margin-inline: auto;
-  width: min(100%, calc((100svh - var(--header-h) - 200px) * var(--vw) / var(--ch)));
+  width: min(100%, max(900px, calc((100svh - var(--header-h) - 32px) * var(--vw) / var(--ch))));
 }
 .map-wrap .section-head { margin-bottom: 20px; }
 .map-frame { position: relative; }
