@@ -78,6 +78,39 @@
     });
   }
 
+  /* Mappa: segnaposto con anteprima */
+  const map = $("[data-map]");
+  if (map) {
+    const pins = $$("[data-pin]", map);
+    const noHover = matchMedia("(hover: none)");
+    const setOpen = (wrap, open) => {
+      wrap.classList.toggle("open", open);
+      const btn = $("button.pin", wrap);
+      if (btn) btn.setAttribute("aria-expanded", String(open));
+    };
+    const closeAll = (except) => pins.forEach((w) => { if (w !== except) setOpen(w, false); });
+
+    pins.forEach((wrap) => {
+      const trigger = $(".pin", wrap);
+      trigger.addEventListener("click", (ev) => {
+        const isOpen = wrap.classList.contains("open");
+        // gruppo (più mobilità): il clic apre/chiude l'elenco
+        // singola su touch: primo tocco = anteprima, secondo tocco = apre la pagina
+        if (trigger.tagName === "BUTTON" || (noHover.matches && !isOpen)) {
+          ev.preventDefault();
+          closeAll(wrap);
+          setOpen(wrap, !isOpen);
+        }
+      });
+    });
+    document.addEventListener("click", (ev) => { if (!ev.target.closest("[data-pin]")) closeAll(); });
+    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeAll(); });
+
+    // dopo l'animazione di disegno, le rotte diventano tratteggiate
+    const route = $(".map-route", map);
+    if (route) route.addEventListener("transitionend", () => map.classList.add("drawn"), { once: true });
+  }
+
   /* Lightbox galleria */
   const lb = $("[data-lightbox-dialog]");
   const links = $$("[data-lightbox]");

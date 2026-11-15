@@ -16,6 +16,7 @@ from __future__ import annotations
 import datetime as dt
 import html
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -336,6 +337,117 @@ def footer(prefix: str, mobs: list[dict]) -> str:
 """
 
 
+# --------------------------------------------------------------------------- mappa
+
+MAP = json.loads((ROOT / "src" / "europe.json").read_text(encoding="utf-8"))
+ISO_NUM = {"PT": "620", "GR": "300", "IE": "372", "ES": "724", "CZ": "203", "IT": "380",
+           "FR": "250", "DE": "276", "PL": "616", "AT": "040", "BE": "056", "NL": "528",
+           "HR": "191", "SI": "705", "MT": "470", "CY": "196", "RO": "642", "BG": "100",
+           "HU": "348", "SK": "703", "LT": "440", "LV": "428", "EE": "233", "FI": "246",
+           "SE": "752", "DK": "208", "LU": "442", "NO": "578", "IS": "352", "TR": "792"}
+GROUP_DIST = 22  # segnaposto più vicini di così (unità viewBox) vengono uniti
+
+
+def project(lat: float, lon: float) -> tuple[float, float]:
+    """Stessa proiezione usata da tools/make_map.py (azimutale equivalente di Lambert)."""
+    pr = MAP["projection"]
+    l, p, p0 = math.radians(lon - pr["lon0"]), math.radians(lat), math.radians(pr["lat0"])
+    k = math.sqrt(2 / (1 + math.sin(p0) * math.sin(p) + math.cos(p0) * math.cos(p) * math.cos(l)))
+    x = k * math.cos(p) * math.sin(l)
+    y = -k * (math.cos(p0) * math.sin(p) - math.sin(p0) * math.cos(p) * math.cos(l))
+    return (x - pr["xmin"]) * pr["scale"], (y - pr["ymin"]) * pr["scale"]
+
+
+def write_base_map() -> None:
+    """Mappa di base (tutti i paesi) come file SVG statico, messo in cache dal browser."""
+    w, h = MAP["width"], MAP["height"]
+    paths = "".join(f'<path d="{c["d"]}"/>' for c in MAP["countries"].values())
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:g} {h:g}">'
+           f'<g fill="#fffdf8" stroke="#cfc6b4" stroke-width=".6" stroke-linejoin="round">{paths}</g></svg>\n')
+    (ROOT / "assets" / "img" / "europe.svg").write_text(svg, encoding="utf-8")
+
+
+def render_map(mobs: list[dict]) -> str:
+    w, h = MAP["width"], MAP["height"]
+    home = SITE["home"]
+    hx, hy = project(home["lat"], home["lon"])
+
+    # raggruppa le mobilità vicine (stessa città, o città a pochi km come Dublin/Carlow)
+    groups: list[dict] = []
+    for m in mobs:
+        x, y = project(m["lat"], m["lon"])
+        g = next((g for g in groups if math.dist((g["x"], g["y"]), (x, y)) < GROUP_DIST), None)
+        if g:
+            g["items"].append(m)
+            n = len(g["items"])
+            g["x"] += (x - g["x"]) / n
+            g["y"] += (y - g["y"]) / n
+        else:
+            groups.append({"x": x, "y": y, "items": [m]})
+
+    # paesi visitati evidenziati + Italia come "casa"
+    visited = {ISO_NUM.get(m["code"]) for m in mobs} - {None}
+    shapes = "".join(f'<path class="map-visited" d="{MAP["countries"][c]["d"]}"/>'
+                     for c in sorted(visited) if c in MAP["countries"])
+    if "380" in MAP["countries"]:
+        shapes += f'<path class="map-home" d="{MAP["countries"]["380"]["d"]}"/>'
+
+    # rotte: archi da Pescara a ogni destinazione
+    routes = []
+    for g in groups:
+        x, y = g["x"], g["y"]
+        mx, my = (hx + x) / 2, (hy + y) / 2
+        dx, dy = x - hx, y - hy
+        px, py = (dy, -dx) if dx >= 0 else (-dy, dx)  # perpendicolare rivolta verso nord (y SVG verso il basso)
+        cx, cy = mx + px * 0.2, my + py * 0.2
+        routes.append(f'<path class="map-route" pathLength="1" d="M{hx:.1f},{hy:.1f}Q{cx:.1f},{cy:.1f} {x:.1f},{y:.1f}"/>')
+
+    pins = []
+    for k, g in enumerate(groups):
+        items = sorted(g["items"], key=lambda m: m["start"])
+        left, top = g["x"] / w * 100, g["y"] / h * 100
+        pos = []
+        pos.append("pop-below" if top < 38 else "pop-above")
+        if left < 22:
+            pos.append("pop-right")
+        elif left > 78:
+            pos.append("pop-left")
+        # etichetta a sinistra se a destra c'è un altro segnaposto vicino (es. Benalúa ↔ Elche)
+        crowded = any(0 < o["x"] - g["x"] < 120 and abs(o["y"] - g["y"]) < 18 for o in groups if o is not g)
+        if crowded:
+            pos.append("label-left")
+        names = list(dict.fromkeys(m["city"] for m in items))
+        label = " · ".join(names)
+        count = f'<span class="pin-count">{len(items)}</span>' if len(items) > 1 else ""
+        pop_items = "".join(f"""<a class="pop-item" href="{m['slug']}/">
+            <img src="{m['slug']}/photos/thumbs/{m['cover']}" alt="" loading="lazy" width="{m['cover_dim'][0]}" height="{m['cover_dim'][1]}">
+            <span class="pop-text">
+              <span class="tag tag-{m['type']}">{e(TYPES[m['type']])}</span>
+              <strong>{flag(m['code'])} {e(m['label'])}</strong>
+              <span class="pop-date">{date_range(m)}</span>
+              <span class="pop-go">Apri la mobilità {ICON['arrow']}</span>
+            </span>
+          </a>""" for m in items)
+        if len(items) == 1:
+            m = items[0]
+            trigger = (f'<a class="pin" href="{m["slug"]}/">'
+                       f'<span class="pin-dot" aria-hidden="true"></span><span class="pin-label">{e(label)}</span></a>')
+        else:
+            trigger = (f'<button class="pin" type="button" aria-expanded="false" aria-controls="pop-{k}">'
+                       f'<span class="pin-dot" aria-hidden="true"></span><span class="pin-label">{e(label)}</span>{count}</button>')
+        pins.append(f"""<div class="pin-wrap {' '.join(pos)}" style="left:{left:.2f}%;top:{top:.2f}%" data-pin>
+        {trigger}
+        <div class="pin-pop" id="pop-{k}">{pop_items}</div>
+      </div>""")
+
+    hl, ht = hx / w * 100, hy / h * 100
+    return f"""<div class="map reveal" style="--ar:{w:g}/{h:g}" data-map>
+        <img class="map-base" src="assets/img/europe.svg?v={VERSION}" alt="" width="{w:g}" height="{h:g}">
+        <svg class="map-over" viewBox="0 0 {w:g} {h:g}" aria-hidden="true">{shapes}<g class="map-routes">{''.join(routes)}</g></svg>
+        <div class="home-pin" style="left:{hl:.2f}%;top:{ht:.2f}%"><span class="home-dot" aria-hidden="true"></span><span class="pin-label">{e(home['name'])}</span></div>
+        {''.join(pins)}
+      </div>"""
+
 # --------------------------------------------------------------------------- pages
 
 def card(m: dict, i: int, prefix: str = "") -> str:
@@ -411,6 +523,19 @@ def render_index(mobs: list[dict]) -> str:
     </div>
     <div class="route" aria-label="Itinerario">
       <ol class="route-track">{route}{route.replace('<li>', '<li aria-hidden="true">').replace('<a ', '<a tabindex="-1" ')}</ol>
+    </div>
+  </section>
+
+  <section class="section map-section" id="mappa" aria-labelledby="map-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Dove siamo stati</p>
+          <h2 id="map-title">La mappa</h2>
+        </div>
+        <p class="hint">Passa sopra un segnaposto per l'anteprima, clicca per aprire la mobilità.</p>
+      </div>
+      {render_map(mobs)}
     </div>
   </section>
 
@@ -658,6 +783,7 @@ def main() -> None:
     (ROOT / "index.html").write_text(render_index(mobs), encoding="utf-8")
     (ROOT / "404.html").write_text(render_404(mobs), encoding="utf-8")
     make_og(mobs)
+    write_base_map()
 
     urls = [SITE["base_url"]] + [f"{SITE['base_url']}{m['slug']}/" for m in mobs]
     (ROOT / "sitemap.xml").write_text(
