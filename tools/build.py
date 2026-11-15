@@ -367,6 +367,18 @@ def write_base_map() -> None:
     (ROOT / "assets" / "img" / "europe.svg").write_text(svg, encoding="utf-8")
 
 
+def graticule() -> str:
+    """Meridiani e paralleli ogni 10°, per dare alla mappa un aspetto cartografico."""
+    lines = []
+    for lon in range(-40, 61, 10):
+        pts = [project(lat, lon) for lat in range(25, 76, 2)]
+        lines.append("M" + "L".join(f"{x:.0f},{y:.0f}" for x, y in pts))
+    for lat in range(30, 71, 10):
+        pts = [project(lat, lon) for lon in range(-40, 61, 2)]
+        lines.append("M" + "L".join(f"{x:.0f},{y:.0f}" for x, y in pts))
+    return f'<path class="map-grid" d="{"".join(lines)}"/>'
+
+
 def render_map(mobs: list[dict]) -> str:
     w, h = MAP["width"], MAP["height"]
     home = SITE["home"]
@@ -385,6 +397,13 @@ def render_map(mobs: list[dict]) -> str:
         else:
             groups.append({"x": x, "y": y, "items": [m]})
 
+    # ritaglio verticale usato su mobile: solo la fascia che contiene i segnaposto
+    ys = [g["y"] for g in groups] + [hy]
+    xs = [g["x"] for g in groups] + [hx]
+    crop_y = max(0.0, min(ys) - 70)
+    crop_h = min(h - crop_y, max(ys) - min(ys) + 140)
+    focus_x = (min(xs) + max(xs)) / 2 / w
+
     # paesi visitati evidenziati + Italia come "casa"
     visited = {ISO_NUM.get(m["code"]) for m in mobs} - {None}
     shapes = "".join(f'<path class="map-visited" d="{MAP["countries"][c]["d"]}"/>'
@@ -392,7 +411,7 @@ def render_map(mobs: list[dict]) -> str:
     if "380" in MAP["countries"]:
         shapes += f'<path class="map-home" d="{MAP["countries"]["380"]["d"]}"/>'
 
-    # rotte: archi da Pescara a ogni destinazione
+    # rotte: archi da Pescara a ogni destinazione, curvati verso nord
     routes = []
     for g in groups:
         x, y = g["x"], g["y"]
@@ -406,18 +425,15 @@ def render_map(mobs: list[dict]) -> str:
     for k, g in enumerate(groups):
         items = sorted(g["items"], key=lambda m: m["start"])
         left, top = g["x"] / w * 100, g["y"] / h * 100
-        pos = []
-        pos.append("pop-below" if top < 38 else "pop-above")
+        pos = ["pop-below" if top < 38 else "pop-above"]
         if left < 22:
             pos.append("pop-right")
         elif left > 78:
             pos.append("pop-left")
         # etichetta a sinistra se a destra c'è un altro segnaposto vicino (es. Benalúa ↔ Elche)
-        crowded = any(0 < o["x"] - g["x"] < 120 and abs(o["y"] - g["y"]) < 18 for o in groups if o is not g)
-        if crowded:
+        if any(0 < o["x"] - g["x"] < 120 and abs(o["y"] - g["y"]) < 18 for o in groups if o is not g):
             pos.append("label-left")
-        names = list(dict.fromkeys(m["city"] for m in items))
-        label = " · ".join(names)
+        label = " · ".join(dict.fromkeys(m["city"] for m in items))
         count = f'<span class="pin-count">{len(items)}</span>' if len(items) > 1 else ""
         pop_items = "".join(f"""<a class="pop-item" href="{m['slug']}/">
             <img src="{m['slug']}/photos/thumbs/{m['cover']}" alt="" loading="lazy" width="{m['cover_dim'][0]}" height="{m['cover_dim'][1]}">
@@ -428,25 +444,40 @@ def render_map(mobs: list[dict]) -> str:
               <span class="pop-go">Apri la mobilità {ICON['arrow']}</span>
             </span>
           </a>""" for m in items)
+        inner = (f'<span class="pin-dot" aria-hidden="true"></span>'
+                 f'<span class="pin-label">{e(label)}</span>{count}')
         if len(items) == 1:
-            m = items[0]
-            trigger = (f'<a class="pin" href="{m["slug"]}/">'
-                       f'<span class="pin-dot" aria-hidden="true"></span><span class="pin-label">{e(label)}</span></a>')
+            trigger = f'<a class="pin" href="{items[0]["slug"]}/">{inner}</a>'
         else:
-            trigger = (f'<button class="pin" type="button" aria-expanded="false" aria-controls="pop-{k}">'
-                       f'<span class="pin-dot" aria-hidden="true"></span><span class="pin-label">{e(label)}</span>{count}</button>')
+            trigger = (f'<button class="pin" type="button" aria-expanded="false" aria-controls="pop-{k}" '
+                       f'aria-label="{e(label)}: {len(items)} mobilità">{inner}</button>')
         pins.append(f"""<div class="pin-wrap {' '.join(pos)}" style="left:{left:.2f}%;top:{top:.2f}%" data-pin>
-        {trigger}
-        <div class="pin-pop" id="pop-{k}">{pop_items}</div>
-      </div>""")
+          {trigger}
+          <div class="pin-pop" id="pop-{k}">
+            <button class="pop-close" type="button" data-pop-close aria-label="Chiudi anteprima">{ICON['close']}</button>
+            {pop_items}
+          </div>
+        </div>""")
 
     hl, ht = hx / w * 100, hy / h * 100
-    return f"""<div class="map reveal" style="--ar:{w:g}/{h:g}" data-map>
-        <img class="map-base" src="assets/img/europe.svg?v={VERSION}" alt="" width="{w:g}" height="{h:g}">
-        <svg class="map-over" viewBox="0 0 {w:g} {h:g}" aria-hidden="true">{shapes}<g class="map-routes">{''.join(routes)}</g></svg>
-        <div class="home-pin" style="left:{hl:.2f}%;top:{ht:.2f}%"><span class="home-dot" aria-hidden="true"></span><span class="pin-label">{e(home['name'])}</span></div>
-        {''.join(pins)}
-      </div>"""
+    countries = len(visited)
+    return f"""<div class="map-wrap reveal" data-map-wrap>
+      <div class="map" style="--ar:{w:g}/{h:g};--vh:{h:.1f};--cy:{crop_y:.1f};--ch:{crop_h:.1f}" data-map data-focus="{focus_x:.3f}">
+        <div class="map-stage">
+          <img class="map-base" src="assets/img/europe.svg?v={VERSION}" alt="" width="{w:g}" height="{h:g}">
+          <svg class="map-over" viewBox="0 0 {w:g} {h:g}" aria-hidden="true">{graticule()}{shapes}<g class="map-routes">{''.join(routes)}</g></svg>
+          <div class="home-pin" style="left:{hl:.2f}%;top:{ht:.2f}%"><span class="home-dot" aria-hidden="true"></span><span class="pin-label">{e(home['name'])}</span></div>
+          {''.join(pins)}
+        </div>
+      </div>
+      <p class="map-drag" aria-hidden="true">{ICON['back']} Trascina per esplorare {ICON['arrow']}</p>
+      <ul class="map-legend">
+        <li><span class="lg-home"></span>{e(home['name'])}, la nostra scuola</li>
+        <li><span class="lg-pin"></span>{len(mobs)} mobilità</li>
+        <li><span class="lg-country"></span>{countries} paesi visitati</li>
+      </ul>
+    </div>"""
+
 
 # --------------------------------------------------------------------------- pages
 
