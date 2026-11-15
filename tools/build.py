@@ -258,6 +258,7 @@ def head(title: str, desc: str, prefix: str, canonical: str, og_image: str) -> s
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="{prefix}assets/css/style.css?v={VERSION}">
 <script src="{prefix}assets/js/main.js?v={VERSION}" defer></script>
+<script data-goatcounter="https://erasmus.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>"""
 
 
