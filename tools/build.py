@@ -275,7 +275,7 @@ def header(prefix: str, current: str | None, mobs: list[dict]) -> str:
 <header class="site-header" data-header>
   <div class="wrap header-inner">
     <a class="brand" href="{prefix}"{home_cur}>
-      <img src="{prefix}assets/img/erasmus-logo.png" alt="Erasmus+" width="640" height="249">
+      <img src="{prefix}assets/img/erasmus-logo.png?v={VERSION}" alt="Erasmus+" width="640" height="249">
       <span class="brand-text"><strong>{e(SITE['school'])}</strong></span>
     </a>
     <button class="menu-btn" type="button" data-menu-open aria-haspopup="dialog">
@@ -304,7 +304,7 @@ def footer(prefix: str, mobs: list[dict]) -> str:
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src="{prefix}assets/img/erasmus-logo.png" alt="Erasmus+" width="640" height="249" loading="lazy">
+        <img src="{prefix}assets/img/erasmus-logo.png?v={VERSION}" alt="Erasmus+" width="640" height="249" loading="lazy">
         <p>{e(SITE['school'])}<br>Il diario delle nostre esperienze Erasmus+ in Europa.</p>
       </div>
       <div>
