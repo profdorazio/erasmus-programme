@@ -195,6 +195,22 @@ def initials(name: str) -> str:
     return "".join(w[0] for w in words[-2:]).upper() or name[:1]
 
 
+def city_heading(m: dict) -> str:
+    """Nome della città; se la città ha più mobilità aggiunge l'anno come etichetta."""
+    if m["label"] == m["city"]:
+        return e(m["city"])
+    return f'{e(m["city"])} <span class="year-badge">{d(m["start"]).year}</span>'
+
+
+def siblings_html(m: dict) -> str:
+    """Link alle altre mobilità nella stessa città (es. Elche 2025 ↔ Elche 2026)."""
+    if not m["siblings"]:
+        return ""
+    links = " · ".join(f'<a href="../{x["slug"]}/">{e(x["label"])} ({e(date_range(x))})</a>'
+                       for x in m["siblings"])
+    return f'<p class="hero-siblings">Siamo stati a {e(m["city"])} anche in un\'altra occasione: {links}</p>'
+
+
 def plural(n: int, one: str, many: str) -> str:
     return f"{n} {one if n == 1 else many}"
 
@@ -251,7 +267,7 @@ def header(prefix: str, current: str | None, mobs: list[dict]) -> str:
         cur = ' aria-current="page"' if m["slug"] == current else ""
         items.append(f"""<li><a href="{prefix}{m['slug']}/"{cur}>
         <span class="menu-num">{i:02d}</span>
-        <span class="menu-city">{e(m['city'])}</span>
+        <span class="menu-city">{e(m['label'])}</span>
         <span class="menu-meta">{e(TYPES[m['type']])} · {d(m['start']).strftime('%m/%Y')}</span>
       </a></li>""")
     home_cur = ' aria-current="page"' if current is None else ""
@@ -282,7 +298,7 @@ def footer(prefix: str, mobs: list[dict]) -> str:
     year = dt.date.today().year
     links = "".join(f'<li><a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["label"])}{ICON["ext"]}</a></li>'
                     for l in SITE["links"])
-    cities = "".join(f'<li><a href="{prefix}{m["slug"]}/">{e(m["city"])}</a></li>' for m in mobs)
+    cities = "".join(f'<li><a href="{prefix}{m["slug"]}/">{e(m["label"])}</a></li>' for m in mobs)
     tel = re.sub(r"\D", "", SITE["phone"])
     return f"""<footer class="site-footer">
   <div class="wrap">
@@ -336,7 +352,7 @@ def card(m: dict, i: int, prefix: str = "") -> str:
     </figure>
     <div class="card-body">
       <p class="card-num">{i:02d} · <span class="tag tag-{m['type']}">{e(TYPES[m['type']])}</span></p>
-      <h3>{e(m['city'])}</h3>
+      <h3>{city_heading(m)}</h3>
       <p class="card-meta">{FLAGS.get(m['code'], '')} {e(m['country'])} · {date_range(m)}</p>
       <p class="card-stats">{' · '.join(stats)}<span class="card-go">{ICON['arrow']}</span></p>
     </div>
@@ -369,7 +385,7 @@ def render_index(mobs: list[dict]) -> str:
     chips = '<button type="button" class="chip" aria-pressed="true" data-filter="all">Tutte</button>' + "".join(
         f'<button type="button" class="chip" aria-pressed="false" data-filter="{t}">{e(TYPES[t])}</button>' for t in used)
 
-    route = "".join(f'<li><a href="{m["slug"]}/">{flag(m["code"])}{e(m["city"])}</a></li>' for m in mobs)
+    route = "".join(f'<li><a href="{m["slug"]}/">{flag(m["code"])}{e(m["label"])}</a></li>' for m in mobs)
     first, last = d(mobs[0]["start"]).year, d(mobs[-1]["start"]).year
     title = SITE["title"]
     return head(title, SITE["description"], "", SITE["base_url"], SITE["base_url"] + "assets/img/og.jpg") + f"""
@@ -428,13 +444,13 @@ def render_index(mobs: list[dict]) -> str:
 def render_city(m: dict, i: int, mobs: list[dict]) -> str:
     p = "../"
     canonical = f"{SITE['base_url']}{m['slug']}/"
-    title = f"{m['city']} · {TYPES[m['type']]} · {SITE['title']}"
+    title = f"{m['label']} · {TYPES[m['type']]} · {SITE['title']}"
     desc = f"{TYPES[m['type']]} a {m['city']} ({m['country']}), {date_range(m)}. {m['intro']}"
     cover = m["cover"]
 
     gallery = "".join(
         f'<li><a href="photos/{ph["file"]}" data-lightbox data-w="{ph["w"]}" data-h="{ph["h"]}">'
-        f'<img src="photos/thumbs/{ph["file"]}" alt="{e(m["city"])} — foto {k} di {len(m["photos"])}" '
+        f'<img src="photos/thumbs/{ph["file"]}" alt="{e(m["label"])} — foto {k} di {len(m["photos"])}" '
         f'width="{ph["tw"]}" height="{ph["th"]}" loading="{'eager' if k <= 6 else 'lazy'}" decoding="async"></a></li>'
         for k, ph in enumerate(m["photos"], 1))
 
@@ -469,7 +485,7 @@ def render_city(m: dict, i: int, mobs: list[dict]) -> str:
             long_cls = " long" if len(t["quote"]) > 320 else ""
             items.append(f"""<li class="story reveal">
         <figure>
-          <div class="story-photo">{avatar}<span class="story-mark">{ICON['quote']}</span></div>
+          <div class="story-photo{' is-illustration' if m.get('avatars') == 'illustration' else ''}">{avatar}<span class="story-mark">{ICON['quote']}</span></div>
           <div class="story-text">
             <blockquote class="{long_cls.strip()}"><p>{quote_html(t['quote'])}</p></blockquote>
             <figcaption>{e(t['name'])}</figcaption>
@@ -497,7 +513,7 @@ def render_city(m: dict, i: int, mobs: list[dict]) -> str:
             return f'<a class="pn {cls} pn-home" href="../"><span class="pn-label">{label}</span><span class="pn-city">Tutte le mobilità</span></a>'
         return (f'<a class="pn {cls}" href="../{x["slug"]}/">'
                 f'<img src="../{x["slug"]}/photos/thumbs/{x["cover"]}" alt="" loading="lazy">'
-                f'<span class="pn-label">{label}</span><span class="pn-city">{e(x["city"])}</span>'
+                f'<span class="pn-label">{label}</span><span class="pn-city">{e(x["label"])}</span>'
                 f'<span class="pn-meta">{date_range(x)}</span></a>')
 
     nav_counts = [plural(len(m["photos"]), "foto", "foto")]
@@ -515,10 +531,11 @@ def render_city(m: dict, i: int, mobs: list[dict]) -> str:
     <div class="wrap hero-city-inner">
       <nav class="crumbs" aria-label="Percorso"><a href="../">Mobilità</a><span aria-hidden="true">/</span><span>{i:02d} di {len(mobs):02d}</span></nav>
       <p class="tag tag-{m['type']}">{e(TYPES[m['type']])}</p>
-      <h1>{e(m['city'])}</h1>
+      <h1>{city_heading(m)}</h1>
       <p class="hero-meta"><span>{FLAGS.get(m['code'], '')} {e(m['country'])}</span><span>{date_range(m)}</span></p>
       <p class="hero-intro">{e(m['intro'])}</p>
       <p class="hero-counts">{' · '.join(nav_counts)}</p>
+      {siblings_html(m)}
     </div>
   </section>
 
@@ -575,10 +592,10 @@ def render_redirect(m: dict) -> str:
 <meta name="robots" content="noindex">
 <meta http-equiv="refresh" content="0; url=../{m['slug']}/">
 <link rel="canonical" href="{SITE['base_url']}{m['slug']}/">
-<title>{e(m['city'])} · {e(SITE['title'])}</title>
+<title>{e(m["label"])} · {e(SITE['title'])}</title>
 </head>
 <body>
-<p><a href="../{m['slug']}/">Vai alla mobilità di {e(m['city'])}</a></p>
+<p><a href="../{m['slug']}/">Vai alla mobilità di {e(m["label"])}</a></p>
 </body>
 </html>
 """
@@ -613,6 +630,11 @@ VERSION = dt.date.today().strftime("%Y%m%d")
 
 def main() -> None:
     mobs = sorted(DATA["mobilities"], key=lambda m: m["start"])
+    # Disambiguazione: se una città compare più volte, l'etichetta include l'anno.
+    for m in mobs:
+        same = [x for x in mobs if x["city"] == m["city"]]
+        m["label"] = m["city"] if len(same) == 1 else f'{m["city"]} {d(m["start"]).year}'
+        m["siblings"] = [x for x in same if x is not m]
     for m in mobs:
         slug = m["slug"]
         m["photos"] = process_photos(slug)

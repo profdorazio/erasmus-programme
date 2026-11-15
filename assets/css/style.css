@@ -389,3 +389,17 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   .hero-meta span + span::before { margin-right: 12px; }
   .hero-meta { gap: 4px 12px; }
 }
+
+/* ---------------------------------------------------------------- città con più mobilità */
+.year-badge {
+  display: inline-block; vertical-align: .55em; margin-left: .15em;
+  font-size: .32em; letter-spacing: 0; line-height: 1;
+  padding: .3em .55em; border-radius: 999px;
+  background: var(--yellow); color: var(--ink); text-shadow: none;
+}
+.card h3 .year-badge { font-size: .5em; vertical-align: .35em; }
+.hero-siblings { margin-top: 14px; font-size: .92rem; color: rgb(255 255 255 / .85); }
+.hero-siblings a { color: var(--yellow); font-weight: 600; text-underline-offset: 3px; }
+
+/* avatar illustrati: mostrati interi su fondo bianco invece che ritagliati */
+.story-photo.is-illustration img { object-fit: contain; background: #fff; padding: 8%; }
