@@ -530,7 +530,6 @@ def render_index(mobs: list[dict]) -> str:
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Dove siamo stati</p>
           <h2 id="map-title">La mappa</h2>
         </div>
         <p class="hint">Passa sopra un segnaposto per l'anteprima, clicca per aprire la mobilità.</p>
@@ -543,7 +542,6 @@ def render_index(mobs: list[dict]) -> str:
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Il diario di bordo</p>
           <h2 id="mob-title">Le mobilità</h2>
         </div>
         <div class="chips" role="group" aria-label="Filtra per tipologia">{chips}</div>
@@ -589,7 +587,6 @@ def render_city(m: dict, i: int, mobs: list[dict]) -> str:
   <section class="section video-section" aria-labelledby="video-title">
     <div class="wrap">
       <div class="section-head center">
-        <p class="eyebrow">Il film del viaggio</p>
         <h2 id="video-title">Scopri l'esperienza</h2>
       </div>
       <div class="video-frame {orient} reveal" style="--ar:{v['w']}/{v['h']}">
@@ -623,7 +620,6 @@ def render_city(m: dict, i: int, mobs: list[dict]) -> str:
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Testimonianze</p>
           <h2 id="stories-title">Le loro storie</h2>
         </div>
       </div>
@@ -669,7 +665,6 @@ def render_city(m: dict, i: int, mobs: list[dict]) -> str:
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="eyebrow">{ICON['photo']} {len(m['photos'])} scatti</p>
           <h2 id="gallery-title">Galleria</h2>
         </div>
         <p class="hint">Tocca una foto per ingrandirla</p>
