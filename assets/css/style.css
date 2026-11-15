@@ -433,38 +433,47 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 .js .map-wrap.reveal.in.drawn .map-route { stroke-dasharray: .006 .014; transition: none; }
 
 /* segnaposto */
-.home-pin, .pin-wrap { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+.home-pin { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+/* il segnaposto è ancorato in basso al centro: la punta dell'ago cade sulla città */
+.pin-wrap { position: absolute; width: 40px; height: 48px; margin: -48px 0 0 -20px; }
 .home-pin { display: grid; place-items: center; pointer-events: none; z-index: 1; }
 .home-dot { width: 14px; height: 14px; border-radius: 3px; background: var(--ink); box-shadow: 0 0 0 3px var(--yellow), 0 3px 8px rgb(11 29 74 / .4); transform: rotate(45deg); }
 .pin-wrap { z-index: 2; }
 .pin-wrap.open { z-index: 6; }
 .pin {
-  position: relative; display: grid; place-items: center; width: 40px; height: 40px;
+  position: relative; display: block; width: 40px; height: 48px;
   border: 0; padding: 0; background: none; text-decoration: none; color: var(--ink); cursor: pointer;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .pin-dot {
-  position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--ink);
-  box-shadow: 0 0 0 4px var(--yellow), 0 4px 12px rgb(11 29 74 / .45);
-  transition: transform .25s var(--ease), background .2s;
+  position: absolute; left: 8px; bottom: 0; width: 24px; height: 44px; overflow: visible;
+  transform-origin: 50% 100%; transform: rotate(9deg);
+  filter: drop-shadow(1.5px 2px 1px rgb(11 29 74 / .22));
+  transition: transform .3s var(--ease);
 }
-.pin-dot::after {
-  content: ""; position: absolute; inset: -4px; border-radius: 50%;
-  border: 2px solid var(--yellow); animation: ping 2.6s var(--ease) infinite;
+/* ombra della punta sulla mappa + onda che pulsa */
+.pin::before, .pin::after {
+  content: ""; position: absolute; left: 50%; bottom: -3px; width: 12px; height: 5px; margin-left: -6px;
+  border-radius: 50%; pointer-events: none;
 }
-.pin-wrap.open .pin-dot { transform: scale(1.3); background: var(--blue); }
+.pin::before { background: rgb(11 29 74 / .3); filter: blur(1px); }
+.pin::after { border: 1.5px solid #ec3326; animation: ping 2.6s var(--ease) infinite; }
+.pin-wrap.open .pin-dot { transform: rotate(0deg) scale(1.15); }
 .pin-label {
   position: absolute; left: 34px; top: 50%; transform: translateY(-50%); white-space: nowrap;
+  z-index: 1;
   font-family: var(--font-display); font-weight: 700; font-size: .78rem; line-height: 1; color: var(--ink);
   padding: .38em .7em; border-radius: 999px; background: rgb(255 255 255 / .92);
   box-shadow: 0 1px 2px rgb(11 29 74 / .12), 0 4px 10px -4px rgb(11 29 74 / .25);
   transition: background .2s, color .2s;
 }
 .label-left .pin-label { left: auto; right: 34px; }
+.pin-wrap .pin-label { top: 11px; }
 .home-pin .pin-label { background: var(--ink); color: #fff; }
 .pin-wrap.open .pin-label { background: var(--ink); color: #fff; }
 .pin-count {
-  position: absolute; top: 2px; right: 0; min-width: 18px; height: 18px; padding: 0 4px;
+  position: absolute; z-index: 2; top: -4px; right: 2px; min-width: 18px; height: 18px; padding: 0 4px;
   border-radius: 999px; background: var(--blue); color: #fff; font-size: .68rem; font-weight: 700;
   display: grid; place-items: center; line-height: 1; box-shadow: 0 0 0 2px #fff;
 }
@@ -499,7 +508,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 /* hover e focus da tastiera solo sui dispositivi con mouse (su touch si apre al tocco) */
 @media (hover: hover) {
   .pin-wrap:is(:hover, :focus-within) { z-index: 6; }
-  .pin-wrap:is(:hover, :focus-within) .pin-dot { transform: scale(1.3); background: var(--blue); }
+  .pin-wrap:is(:hover, :focus-within) .pin-dot { transform: rotate(0deg) scale(1.15); }
   .pin-wrap:is(:hover, :focus-within) .pin-label { background: var(--ink); color: #fff; }
   .pin-wrap:is(:hover, :focus-within) .pin-pop { opacity: 1; visibility: visible; transition: opacity .18s, transform .25s var(--ease); transform: translate(-50%, 0) scale(1); }
   .pop-right:is(:hover, :focus-within) .pin-pop, .pop-left:is(:hover, :focus-within) .pin-pop { transform: none; }
@@ -527,7 +536,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 .map-legend li { display: flex; align-items: center; gap: 10px; }
 .map-legend span { flex: none; display: inline-block; }
 .lg-home { width: 10px; height: 10px; margin: 0 2px; border-radius: 2px; background: var(--ink); box-shadow: 0 0 0 2px var(--yellow); transform: rotate(45deg); }
-.lg-pin { width: 10px; height: 10px; margin: 0 2px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 3px var(--yellow); }
+.lg-pin { width: 12px; height: 12px; margin: 0 1px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff9a8f, #ec3326 45%, #9e120a); box-shadow: 0 1px 2px rgb(11 29 74 / .35); }
 .lg-country { width: 14px; height: 10px; border-radius: 2px; background: #c3d1f7; box-shadow: inset 0 0 0 1px var(--blue); }
 .map-drag { display: none; }
 
@@ -557,7 +566,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 
   .pin-label { font-size: .7rem; left: 30px; }
   .label-left .pin-label { right: 30px; }
-  .pin-dot { width: 14px; height: 14px; }
+  .pin-dot { width: 22px; height: 40px; left: 9px; }
 
   .map-drag {
     position: absolute; z-index: 5; left: 50%; top: calc(min(64svh, 520px) - 50px); transform: translateX(-50%);

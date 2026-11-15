@@ -367,6 +367,18 @@ def write_base_map() -> None:
     (ROOT / "assets" / "img" / "europe.svg").write_text(svg, encoding="utf-8")
 
 
+# Puntina classica (testa a pallino rosso + ago), definita una volta e riusata con <use>.
+PUSHPIN_SYMBOL = """<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+        <radialGradient id="pp-head" cx="36%" cy="30%" r="72%"><stop offset="0" stop-color="#ff9a8f"/><stop offset=".45" stop-color="#ec3326"/><stop offset="1" stop-color="#9e120a"/></radialGradient>
+        <linearGradient id="pp-needle" x1="0" x2="1"><stop offset="0" stop-color="#a9b1bd"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#8a93a1"/></linearGradient>
+        <symbol id="pushpin" viewBox="0 0 24 44">
+          <path d="M10.6 17 12 44 13.4 17Z" fill="url(#pp-needle)" stroke="#6b7482" stroke-width=".35"/>
+          <circle cx="12" cy="11" r="9" fill="url(#pp-head)"/>
+          <ellipse cx="8.8" cy="7.4" rx="3.2" ry="2.1" fill="#fff" opacity=".6"/>
+        </symbol>
+      </defs></svg>"""
+
+
 def graticule() -> str:
     """Meridiani e paralleli ogni 10°, per dare alla mappa un aspetto cartografico."""
     lines = []
@@ -444,7 +456,7 @@ def render_map(mobs: list[dict]) -> str:
               <span class="pop-go">Apri la mobilità {ICON['arrow']}</span>
             </span>
           </a>""" for m in items)
-        inner = (f'<span class="pin-dot" aria-hidden="true"></span>'
+        inner = (f'<svg class="pin-dot" viewBox="0 0 24 44" aria-hidden="true"><use href="#pushpin"/></svg>'
                  f'<span class="pin-label">{e(label)}</span>{count}')
         if len(items) == 1:
             trigger = f'<a class="pin" href="{items[0]["slug"]}/">{inner}</a>'
@@ -462,6 +474,7 @@ def render_map(mobs: list[dict]) -> str:
     hl, ht = hx / w * 100, hy / h * 100
     countries = len(visited)
     return f"""<div class="map-wrap reveal" data-map-wrap>
+      {PUSHPIN_SYMBOL}
       <div class="map" style="--ar:{w:g}/{h:g};--vh:{h:.1f};--cy:{crop_y:.1f};--ch:{crop_h:.1f}" data-map data-focus="{focus_x:.3f}">
         <div class="map-stage">
           <img class="map-base" src="assets/img/europe.svg?v={VERSION}" alt="" width="{w:g}" height="{h:g}">
