@@ -369,12 +369,23 @@ def write_base_map() -> None:
 
 # Puntina classica (testa a pallino rosso + ago), definita una volta e riusata con <use>.
 PUSHPIN_SYMBOL = """<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>
-        <radialGradient id="pp-head" cx="36%" cy="30%" r="72%"><stop offset="0" stop-color="#ff9a8f"/><stop offset=".45" stop-color="#ec3326"/><stop offset="1" stop-color="#9e120a"/></radialGradient>
-        <linearGradient id="pp-needle" x1="0" x2="1"><stop offset="0" stop-color="#a9b1bd"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#8a93a1"/></linearGradient>
-        <symbol id="pushpin" viewBox="0 0 24 44">
-          <path d="M10.6 17 12 44 13.4 17Z" fill="url(#pp-needle)" stroke="#6b7482" stroke-width=".35"/>
-          <circle cx="12" cy="11" r="9" fill="url(#pp-head)"/>
-          <ellipse cx="8.8" cy="7.4" rx="3.2" ry="2.1" fill="#fff" opacity=".6"/>
+        <radialGradient id="pp-head" cx="40%" cy="34%" r="68%" fx="38%" fy="30%">
+          <stop offset="0" stop-color="#ff8e86"/><stop offset=".18" stop-color="#f2453d"/>
+          <stop offset=".62" stop-color="#d81f1f"/><stop offset="1" stop-color="#94110f"/>
+        </radialGradient>
+        <radialGradient id="pp-gloss" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="pp-needle" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(14 .5 .5)">
+          <stop offset="0" stop-color="#6f7783"/><stop offset=".42" stop-color="#ffffff"/>
+          <stop offset=".7" stop-color="#c9ced6"/><stop offset="1" stop-color="#5d6571"/>
+        </linearGradient>
+        <filter id="pp-blur" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="1.3"/></filter>
+        <symbol id="pushpin" viewBox="0 0 26 42" overflow="visible">
+          <ellipse cx="15" cy="40.2" rx="7.5" ry="1.9" transform="rotate(-12 15 40.2)" fill="#0b1d4a" opacity=".42" filter="url(#pp-blur)"/>
+          <path d="M6.9 41.6 12.2 19.1 14.5 19.7 9.2 42.2Z" fill="url(#pp-needle)"/>
+          <circle cx="15" cy="11" r="10" fill="url(#pp-head)"/>
+          <ellipse cx="12.2" cy="7.6" rx="4.4" ry="3.4" fill="url(#pp-gloss)"/>
         </symbol>
       </defs></svg>"""
 
@@ -456,7 +467,7 @@ def render_map(mobs: list[dict]) -> str:
               <span class="pop-go">Apri la mobilità {ICON['arrow']}</span>
             </span>
           </a>""" for m in items)
-        inner = (f'<svg class="pin-dot" viewBox="0 0 24 44" aria-hidden="true"><use href="#pushpin"/></svg>'
+        inner = (f'<svg class="pin-dot" viewBox="0 0 26 42" aria-hidden="true"><use href="#pushpin"/></svg>'
                  f'<span class="pin-label">{e(label)}</span>{count}')
         if len(items) == 1:
             trigger = f'<a class="pin" href="{items[0]["slug"]}/">{inner}</a>'
