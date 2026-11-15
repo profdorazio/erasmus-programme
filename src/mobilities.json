@@ -8,9 +8,18 @@
     "phone": "08567422",
     "address": "Via Scarfoglio, 35 – 65129 Pescara",
     "links": [
-      { "label": "Erasmus+ al Pescara 6", "url": "https://comprensivopescara6.edu.it/erasmus-plus/" },
-      { "label": "Sito della scuola", "url": "https://comprensivopescara6.edu.it/" },
-      { "label": "Programma Erasmus+ (UE)", "url": "https://erasmus-plus.ec.europa.eu/it" }
+      {
+        "label": "Erasmus+ al Pescara 6",
+        "url": "https://comprensivopescara6.edu.it/erasmus-plus/"
+      },
+      {
+        "label": "Sito della scuola",
+        "url": "https://comprensivopescara6.edu.it/"
+      },
+      {
+        "label": "Programma Erasmus+ (UE)",
+        "url": "https://erasmus-plus.ec.europa.eu/it"
+      }
     ]
   },
   "types": {
@@ -232,6 +241,50 @@
           "name": "Prof.ssa D’Orazio",
           "photo": "dorazio.jpg",
           "quote": "Teaching is my passion, and discovering different perspectives through the Erasmus+ mobilities makes it more and more fascinating."
+        }
+      ]
+    },
+    {
+      "slug": "elche-2026",
+      "city": "Elche",
+      "country": "Spagna",
+      "code": "ES",
+      "type": "group",
+      "start": "2026-05-13",
+      "end": "2026-05-17",
+      "cover": "07.jpg",
+      "intro": "Si torna a Elche: famiglie ospitanti, palmeti, sport a scuola e tante nuove amicizie.",
+      "avatars": "illustration",
+      "testimonials": [
+        {
+          "name": "Andrea",
+          "photo": "andrea.jpg",
+          "quote": "Erasmus is an experience that will be imprinted in my memory forever."
+        },
+        {
+          "name": "Matteo",
+          "photo": "matteo.jpg",
+          "quote": "Hello, my name is Matteo. I participated in the Erasmus project and trust me, it's something that happens once in a lifetime and it must be done. I honestly liked Erasmus a lot, also because it was the first time I slept so far from home. With my classmates we went to Elche, in Spain, and that city is really beautiful; in fact we had a lot of fun, also because the people we met were very nice. We were warmly welcomed by our host families. Therefore it's an experience that I strongly recommend."
+        },
+        {
+          "name": "Venere",
+          "photo": "venere.jpg",
+          "quote": "In Erasmus I visited Elche, a beautiful and sunny city. I loved the school organization because they have 8 hours of school, but every half an hour they have a snack and they play football, volleyball, rugby, basketball, tennis and other sports. I loved going for walks with my host family and friends, eating ice cream and going to the shopping centre with friends. I went to a volleyball match with Elena and our host sisters. I loved the warm welcome on our arrival so much. I went to Spain to make new friends, to study Spanish and to improve my English. I also loved the food, the family dinners and staying with the family. I loved the Erasmus+ mobility because I made a lot of new friends."
+        },
+        {
+          "name": "Elena P.",
+          "photo": "elena-p.jpg",
+          "quote": "My Erasmus experience was very nice and exciting. I liked travelling with my classmates and making new friends. We spoke different languages, but we had fun together. I also liked my Spanish family. I learned about their habits and loved Spanish food! Elche is a beautiful city with a lot of palm trees. I really liked visiting it. It was a new and special experience for me and I hope to go on Erasmus again!"
+        },
+        {
+          "name": "Elena T.",
+          "photo": "elena-t.jpg",
+          "quote": "Erasmus is an experience that you need to try once in your life. This year I visited Elche, a little city in Spain. My host sister’s name was Julia. With Erasmus you make new friends, visit new places that you have never heard of, and try new food and new experiences. I really hope that with this message I will convince you to try Erasmus at least once in your life, because even if it’s your first time flying without your parents, it is worth it."
+        },
+        {
+          "name": "Anna Lucia",
+          "photo": "anna-lucia.jpg",
+          "quote": "Hello, my name is Anna Lucia and I participated in the Erasmus+ project. It has been one of the most amazing experiences in my whole life. I felt like a local and had a lot of fun inside and outside the school. Whoever after us is going to experience this wonderful opportunity is going to enjoy it as I enjoyed every second."
         }
       ]
     }

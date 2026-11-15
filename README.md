@@ -43,4 +43,11 @@ poster dei video (serve `ffmpeg`) e riscrive tutte le pagine, il sitemap e i red
    `cover` = la foto di copertina).
 4. Lancia `python3 tools/build.py`, poi fai commit e push.
 
+**Stessa città più volte** (es. Elche 2025 e 2026): usa uno slug diverso
+(`elche-2026`) e lo stesso `city`. Il build se ne accorge da solo: aggiunge l'anno
+al nome ovunque ("Elche 2025" / "Elche 2026") e collega tra loro le pagine.
+
+Se gli avatar delle testimonianze sono illustrazioni (non foto), aggiungi
+`"avatars": "illustration"` alla mobilità: verranno mostrati interi, senza ritaglio.
+
 Design by 11 studio.
