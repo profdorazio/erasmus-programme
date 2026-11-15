@@ -443,11 +443,10 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 .map-home { fill: #ffe79a; stroke: #c99a00; stroke-width: .7; stroke-linejoin: round; }
 .map-route {
   fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-linecap: round;
-  stroke-dasharray: .006 .014; opacity: .5;
+  opacity: .5;
 }
 .js .map-wrap.reveal .map-route { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.8s var(--ease) .3s; }
 .js .map-wrap.reveal.in .map-route { stroke-dashoffset: 0; }
-.js .map-wrap.reveal.in.drawn .map-route { stroke-dasharray: .006 .014; transition: none; }
 
 /* segnaposto */
 .home-pin { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
@@ -604,7 +603,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   .pop-item img { width: 84px; height: 76px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .js .map-wrap.reveal .map-route { stroke-dasharray: .006 .014; stroke-dashoffset: 0; }
+  .js .map-wrap.reveal .map-route { stroke-dasharray: none; stroke-dashoffset: 0; }
 }
 /* la mappa compare solo in dissolvenza: un transform sul contenitore
    aggancerebbe a lui l'anteprima position:fixed usata su mobile */

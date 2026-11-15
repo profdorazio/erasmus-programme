@@ -130,9 +130,6 @@
       mapWrap.classList.add("scrolled");
     }, { passive: true });
 
-    // Dopo l'animazione di disegno le rotte diventano tratteggiate.
-    const route = $(".map-route", map);
-    if (route) route.addEventListener("transitionend", () => mapWrap.classList.add("drawn"), { once: true });
   }
 
   /* Lightbox galleria */
