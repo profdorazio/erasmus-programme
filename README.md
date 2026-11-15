@@ -47,6 +47,11 @@ poster dei video (serve `ffmpeg`) e riscrive tutte le pagine, il sitemap e i red
 (`elche-2026`) e lo stesso `city`. Il build se ne accorge da solo: aggiunge l'anno
 al nome ovunque ("Elche 2025" / "Elche 2026") e collega tra loro le pagine.
 
+**Mappa:** ogni mobilità ha `lat` e `lon` (coordinate della città, da Google Maps:
+tasto destro sul punto → copia le coordinate). Il segnaposto, la rotta da Pescara e il
+colore del paese si aggiornano da soli al build. I confini dei paesi sono in
+`src/europe.json`, generato una volta sola da `tools/make_map.py` (istruzioni nel file).
+
 Se gli avatar delle testimonianze sono illustrazioni (non foto), aggiungi
 `"avatars": "illustration"` alla mobilità: verranno mostrati interi, senza ritaglio.
 
