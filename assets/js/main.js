@@ -79,10 +79,12 @@
   }
 
   /* Mappa: segnaposto con anteprima */
-  const map = $("[data-map]");
-  if (map) {
+  const mapWrap = $("[data-map-wrap]");
+  if (mapWrap) {
+    const map = $("[data-map]", mapWrap);
     const pins = $$("[data-pin]", map);
-    const noHover = matchMedia("(hover: none)");
+    const canHover = matchMedia("(hover: hover)");
+
     const setOpen = (wrap, open) => {
       wrap.classList.toggle("open", open);
       const btn = $("button.pin", wrap);
@@ -94,21 +96,43 @@
       const trigger = $(".pin", wrap);
       trigger.addEventListener("click", (ev) => {
         const isOpen = wrap.classList.contains("open");
-        // gruppo (più mobilità): il clic apre/chiude l'elenco
-        // singola su touch: primo tocco = anteprima, secondo tocco = apre la pagina
-        if (trigger.tagName === "BUTTON" || (noHover.matches && !isOpen)) {
+        const isGroup = trigger.tagName === "BUTTON";
+        // Con il mouse: clic sul segnaposto singolo = apre la pagina (l'anteprima è già visibile con l'hover).
+        // Su touch: primo tocco = anteprima, secondo tocco sullo stesso segnaposto = apre la pagina.
+        // Gruppi (più mobilità): il clic apre/chiude l'elenco.
+        if (isGroup || (!canHover.matches && !isOpen)) {
           ev.preventDefault();
           closeAll(wrap);
           setOpen(wrap, !isOpen);
         }
       });
+      const close = $("[data-pop-close]", wrap);
+      if (close) close.addEventListener("click", (ev) => { ev.stopPropagation(); setOpen(wrap, false); });
     });
     document.addEventListener("click", (ev) => { if (!ev.target.closest("[data-pin]")) closeAll(); });
     document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeAll(); });
 
-    // dopo l'animazione di disegno, le rotte diventano tratteggiate
+    // Mobile: la mappa scorre in orizzontale. All'avvio la centro sulle mobilità
+    // e nascondo il suggerimento "trascina" al primo scorrimento dell'utente.
+    let autoScroll = false;
+    const centerMap = () => {
+      if (map.scrollWidth <= map.clientWidth) return;
+      const focus = parseFloat(map.dataset.focus) || 0.5;
+      autoScroll = true;
+      map.scrollLeft = focus * map.scrollWidth - map.clientWidth / 2;
+      requestAnimationFrame(() => { autoScroll = false; });
+    };
+    centerMap();
+    addEventListener("load", centerMap, { once: true });
+    setTimeout(() => mapWrap.classList.add("scrolled"), 4500);
+    map.addEventListener("scroll", () => {
+      if (autoScroll) return;
+      mapWrap.classList.add("scrolled");
+    }, { passive: true });
+
+    // Dopo l'animazione di disegno le rotte diventano tratteggiate.
     const route = $(".map-route", map);
-    if (route) route.addEventListener("transitionend", () => map.classList.add("drawn"), { once: true });
+    if (route) route.addEventListener("transitionend", () => mapWrap.classList.add("drawn"), { once: true });
   }
 
   /* Lightbox galleria */
