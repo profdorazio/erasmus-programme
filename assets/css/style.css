@@ -52,6 +52,8 @@ p { margin: 0; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 button { font: inherit; color: inherit; cursor: pointer; }
 svg { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.flag { width: 1.35em; height: .9em; display: inline-block; vertical-align: -.08em; border-radius: 2px; box-shadow: 0 0 0 1px rgb(0 0 0 / .12); stroke: none; overflow: hidden; }
+.route .flag { width: 1.5em; height: 1em; box-shadow: 0 0 0 1px rgb(255 255 255 / .25); }
 mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yellow) 92%, transparent 92%); color: inherit; padding: 0 .08em; }
 :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
 
@@ -169,7 +171,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 .route:hover .route-track, .route:focus-within .route-track { animation-play-state: paused; }
 .route li { display: flex; align-items: center; }
 .route li::after { content: "✈"; color: var(--yellow); margin: 0 1.6rem; font-size: .9rem; }
-.route a { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; text-decoration: none; white-space: nowrap; }
+.route a { display: inline-flex; align-items: center; gap: .55em; font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; text-decoration: none; white-space: nowrap; }
 .route a:hover { color: var(--yellow); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 

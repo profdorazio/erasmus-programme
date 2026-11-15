@@ -35,7 +35,37 @@ JPEG_Q = 80
 
 MONTHS = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio",
           "agosto", "settembre", "ottobre", "novembre", "dicembre"]
-FLAGS = {"PT": "🇵🇹", "GR": "🇬🇷", "IE": "🇮🇪", "ES": "🇪🇸", "CZ": "🇨🇿", "IT": "🇮🇹"}
+# Bandiere SVG semplificate (le emoji-bandiera non si vedono su Windows). viewBox 3x2.
+_FLAG_SVG = {
+    "PT": '<rect width="3" height="2" fill="#da291c"/><rect width="1.2" height="2" fill="#046a38"/>'
+          '<circle cx="1.2" cy="1" r=".42" fill="#ffe900"/><circle cx="1.2" cy="1" r=".24" fill="#da291c"/>',
+    "GR": '<rect width="3" height="2" fill="#0d5eaf"/>'
+          + "".join(f'<rect y="{2*i/9:.3f}" width="3" height="{2/9:.3f}" fill="#fff"/>' for i in (1, 3, 5, 7))
+          + '<rect width="1.111" height="1.111" fill="#0d5eaf"/>'
+          '<rect x=".444" width=".222" height="1.111" fill="#fff"/><rect y=".444" width="1.111" height=".222" fill="#fff"/>',
+    "IE": '<rect width="1" height="2" fill="#169b62"/><rect x="1" width="1" height="2" fill="#fff"/>'
+          '<rect x="2" width="1" height="2" fill="#ff883e"/>',
+    "ES": '<rect width="3" height="2" fill="#aa151b"/><rect y=".5" width="3" height="1" fill="#f1bf00"/>',
+    "CZ": '<rect width="3" height="1" fill="#fff"/><rect y="1" width="3" height="1" fill="#d7141a"/>'
+          '<path d="M0 0L1.5 1 0 2z" fill="#11457e"/>',
+    "IT": '<rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/>'
+          '<rect x="2" width="1" height="2" fill="#ce2b37"/>',
+}
+
+
+def flag(code: str) -> str:
+    body = _FLAG_SVG.get(code)
+    if not body:
+        return ""
+    return f'<svg class="flag" viewBox="0 0 3 2" aria-hidden="true">{body}</svg>'
+
+
+class _Flags(dict):
+    def get(self, code, default=""):  # compatibile con FLAGS.get(...)
+        return flag(code) or default
+
+
+FLAGS = _Flags()
 
 e = html.escape
 
@@ -339,7 +369,7 @@ def render_index(mobs: list[dict]) -> str:
     chips = '<button type="button" class="chip" aria-pressed="true" data-filter="all">Tutte</button>' + "".join(
         f'<button type="button" class="chip" aria-pressed="false" data-filter="{t}">{e(TYPES[t])}</button>' for t in used)
 
-    route = "".join(f'<li><a href="{m["slug"]}/">{e(m["city"])}</a></li>' for m in mobs)
+    route = "".join(f'<li><a href="{m["slug"]}/">{flag(m["code"])}{e(m["city"])}</a></li>' for m in mobs)
     first, last = d(mobs[0]["start"]).year, d(mobs[-1]["start"]).year
     title = SITE["title"]
     return head(title, SITE["description"], "", SITE["base_url"], SITE["base_url"] + "assets/img/og.jpg") + f"""
