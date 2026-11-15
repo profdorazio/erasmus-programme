@@ -349,6 +349,8 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
 .footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0 28px; border-top: 1px solid rgb(255 255 255 / .12); font-size: .85rem; color: rgb(255 255 255 / .6); }
 .credit { display: inline-flex; align-items: center; gap: 12px; }
 .credit img { height: 22px; width: auto; }
+.credit a { display: inline-flex; transition: opacity .2s; }
+.credit a:hover { opacity: .75; }
 
 /* ---------------------------------------------------------------- motion */
 .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
