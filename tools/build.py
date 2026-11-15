@@ -380,7 +380,7 @@ def render_index(mobs: list[dict]) -> str:
     <div class="wrap hero-home-grid">
       <div class="hero-home-text">
         <p class="eyebrow"><span class="dot"></span> Erasmus+ · {first}–{last}</p>
-        <h1><mark>Una sola</mark><br>Europa.</h1>
+        <h1>Una sola<br><mark>Europa</mark>.</h1>
         <p class="lead">{e(SITE['description'])}</p>
         <dl class="stats">
           <div><dt>Mobilità</dt><dd data-count="{len(mobs)}">{len(mobs)}</dd></div>
