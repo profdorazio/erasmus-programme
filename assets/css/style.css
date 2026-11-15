@@ -452,12 +452,6 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   transform-origin: 8px 100%;
   transition: transform .3s var(--ease);
 }
-/* ombra della punta sulla mappa + onda che pulsa */
-.pin::after {
-  content: ""; position: absolute; left: 50%; bottom: -3px; width: 12px; height: 5px; margin-left: -6px;
-  border-radius: 50%; pointer-events: none;
-}
-.pin::after { border: 1.5px solid #ec3326; animation: ping 2.6s var(--ease) infinite; }
 .pin-wrap.open .pin-dot { transform: scale(1.14); }
 .pin-label {
   position: absolute; left: 34px; top: 50%; transform: translateY(-50%); white-space: nowrap;
@@ -468,16 +462,15 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   transition: background .2s, color .2s;
 }
 .label-left .pin-label { left: auto; right: 34px; }
-.pin-wrap .pin-label { top: 17px; left: 42px; }
+.pin-wrap .pin-label { top: 19px; left: 38px; }
 .pin-wrap.label-left .pin-label { left: auto; right: 30px; }
 .home-pin .pin-label { background: var(--ink); color: #fff; }
 .pin-wrap.open .pin-label { background: var(--ink); color: #fff; }
 .pin-count {
-  position: absolute; z-index: 2; top: 0; right: -6px; min-width: 18px; height: 18px; padding: 0 4px;
+  position: absolute; z-index: 2; top: -2px; right: -12px; min-width: 18px; height: 18px; padding: 0 4px;
   border-radius: 999px; background: var(--blue); color: #fff; font-size: .68rem; font-weight: 700;
   display: grid; place-items: center; line-height: 1; box-shadow: 0 0 0 2px #fff;
 }
-@keyframes ping { 0% { transform: scale(.9); opacity: .9; } 75%, 100% { transform: scale(2.2); opacity: 0; } }
 
 /* anteprima (desktop: agganciata al segnaposto) */
 .pin-pop {
@@ -567,7 +560,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yel
   .pin-label { font-size: .7rem; left: 30px; }
   .label-left .pin-label { right: 30px; }
   .pin-dot { width: 23px; height: 37px; left: 13px; transform-origin: 7px 100%; }
-  .pin-wrap .pin-label { top: 20px; left: 40px; }
+  .pin-wrap .pin-label { top: 21px; left: 36px; }
 
   .map-drag {
     position: absolute; z-index: 5; left: 50%; top: calc(min(64svh, 520px) - 50px); transform: translateX(-50%);
