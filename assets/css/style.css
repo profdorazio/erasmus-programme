@@ -543,7 +543,7 @@ html:has(dialog[open]) { overflow: hidden; scrollbar-gutter: stable; }
 .map-legend li { display: flex; align-items: center; gap: 8px; }
 .map-legend span { flex: none; display: inline-block; }
 .lg-home { width: 16px; height: 16px; background: var(--giallo); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
-.lg-pin { width: 16px; height: 16px; border: 2.5px solid var(--rosa); border-radius: 50%; }
+.lg-pin { width: 16px; height: 16px; border: 2.5px solid var(--blu); border-radius: 50%; }
 .lg-country { width: 18px; height: 12px; background: var(--rosa); }
 .lg-italy { width: 18px; height: 12px; background: var(--blu); }
 .map-drag { display: none; }
