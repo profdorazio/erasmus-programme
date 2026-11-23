@@ -40,7 +40,7 @@ body{background-color:var(--carta);color:var(--grafite);font:400 1.15rem/1.5 var
 .ul2{display:inline-block;padding-bottom:.12em;border-bottom:3px solid var(--blu);box-shadow:0 5px 0 -1px var(--carta),0 8px 0 0 var(--blu)}
 header.in{padding-block:2rem 1rem;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1rem;align-items:baseline}
 header .ti{font-size:1.35rem;text-decoration:none}
-main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
+main.in{display:grid;grid-template-columns:minmax(0,1fr);gap:4.5rem;padding-block:1.5rem 4rem}
 .hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:2.5rem;align-items:center}
 @media (max-width:820px){.hero{grid-template-columns:minmax(0,1fr)}}
 .hero-t{display:grid;gap:1.1rem;justify-items:start}
@@ -75,7 +75,7 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 .collage .taped:nth-child(1){left:0;top:0;transform:rotate(-3deg)}
 .collage .taped:nth-child(2){right:0;top:22%;transform:rotate(2.5deg)}
 .collage .taped:nth-child(3){left:14%;bottom:0;transform:rotate(-.8deg)}
-@media (max-width:820px){.collage{min-height:0;display:grid;gap:1.6rem}.collage .taped{position:relative;width:auto;inset:auto}}
+@media (max-width:820px){.collage{min-height:0;display:grid;gap:1.6rem}.collage .taped:nth-child(n){position:relative;width:auto;inset:auto}}
 .sh{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:baseline;justify-content:space-between;margin-bottom:1.6rem}
 .sh h2{font-size:clamp(2.2rem,6vw,3.4rem)}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:2.2rem 1.6rem}
@@ -110,6 +110,10 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 .ill svg{width:100%;height:auto}
 .mapbox{position:relative;overflow:hidden;max-width:100%}
 .mapbox .stage{position:absolute;left:0;width:100%}
+.mapscroll{overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:.4rem}
+.mapscroll .mapbox{min-width:720px}
+.swipe{display:none;color:var(--matita);font-size:1rem;margin-top:.4rem}
+@media (max-width:760px){.swipe{display:block}}
 .mapbox .paint{width:100%;height:auto;overflow:visible;isolation:isolate}
 .legend-q{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin-top:1rem;font:400 1rem var(--f-hand);font-variation-settings:"INFM" 80}
 .legend-q span{display:inline-flex;align-items:center;gap:.45rem}

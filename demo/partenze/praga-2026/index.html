@@ -33,7 +33,7 @@ body{background:var(--biglietto);color:var(--inchiostro);font:400 1.0625rem/1.55
 .sign .w{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;align-items:center;padding-block:.9rem}
 .sign b,.sign a.b{font:800 1.15rem var(--f-tx);letter-spacing:.01em;text-decoration:none}
 .sign span{font:400 .78rem var(--f-dt);letter-spacing:.08em}
-main{display:grid;gap:3.2rem;padding-block:2.4rem 4rem}
+main{display:grid;grid-template-columns:minmax(0,1fr);gap:3.2rem;padding-block:2.4rem 4rem}
 h2{font:800 clamp(1.6rem,4vw,2.3rem)/1.1 var(--f-tx);margin:0}
 .lbl{font:400 .7rem var(--f-dt);letter-spacing:.12em;text-transform:uppercase;color:var(--grigio)}
 .ticket{background:var(--carta);display:grid;grid-template-columns:minmax(0,1fr) 170px;position:relative}

@@ -35,7 +35,7 @@ body{background:var(--carta);color:var(--carbone);font:400 1.0625rem/1.55 var(--
 .top .hd{font-size:1.4rem;text-decoration:none}
 .top .mc{font-size:.85rem;text-align:right}
 .sez{display:inline-block;justify-self:start;font:900 .9rem var(--f-hd);letter-spacing:.12em;text-transform:uppercase;background:var(--carbone);color:var(--carta);padding:.2rem .6rem}
-section{padding-block:2.6rem;border-bottom:1px solid var(--riga);display:grid;gap:1.2rem}
+section{padding-block:2.6rem;border-bottom:1px solid var(--riga);display:grid;grid-template-columns:minmax(0,1fr);gap:1.2rem}
 .hero{position:relative;padding-block:2.4rem 3rem}
 .hero h1{font-size:clamp(4rem,16vw,10rem)}
 .hero h1.long{font-size:clamp(3rem,11vw,7.4rem)}
@@ -55,7 +55,7 @@ section{padding-block:2.6rem;border-bottom:1px solid var(--riga);display:grid;ga
 .pen{font:500 1.25rem/1.2 var(--f-pen);color:var(--penna);font-variation-settings:"INFM" 100,"BNCE" 40;transform:rotate(-2deg);max-width:28ch}
 .stamp{position:absolute;right:2%;top:2.2rem;width:clamp(120px,20vw,190px);transform:rotate(-12deg);mix-blend-mode:multiply;opacity:.9;pointer-events:none}
 .sh{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:baseline;justify-content:space-between}
-.sh h2{font-size:clamp(2rem,6vw,3.2rem)}
+.sh h2{font-size:clamp(1.8rem,6vw,3.2rem);overflow-wrap:break-word;hyphens:auto;min-width:0;max-width:100%}
 .note{font-size:.85rem;color:var(--riga-t)}
 .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:1rem}
 .photos a{display:grid;gap:.3rem;text-decoration:none}
