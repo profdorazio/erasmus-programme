@@ -12,7 +12,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0}
+body{margin:0;overflow-x:hidden;overflow-x:clip}
 img,video,svg{display:block;max-width:100%}
 img{height:auto}
 p,h1,h2,h3,figure,blockquote{margin:0}
@@ -48,7 +48,7 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 .hero h1.long{font-size:clamp(3.2rem,10vw,6.4rem);line-height:1.05}
 .hero h1 .y{color:var(--rosa);font-size:.42em;vertical-align:.95em;margin-left:.1em}
 .hero p.intro{font-size:1.3rem;max-width:36ch}
-.stk{display:flex;flex-wrap:wrap;gap:.5rem}
+.stk{display:flex;flex-wrap:wrap;gap:.5rem;isolation:isolate}
 .stk span,.stk button{font:700 .82rem var(--f-tx);letter-spacing:.06em;text-transform:uppercase;padding:.3rem .65rem;background:var(--rosa);color:var(--carta);mix-blend-mode:multiply;border:0}
 .stk span:nth-child(2){background:var(--blu);transform:rotate(-2deg)}
 .stk span:nth-child(3){background:var(--giallo);color:var(--grafite);transform:rotate(1.5deg)}
@@ -66,7 +66,7 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 .taped{position:relative;background:var(--carta);border:1px solid var(--bordo);padding:10px 10px 12px;display:grid;gap:.35rem}
 .taped::before{content:"";position:absolute;width:90px;height:26px;background:rgb(255 232 0 / .62);top:-12px;left:calc(50% - 45px);transform:rotate(-5deg);z-index:1}
 .taped figcaption{font:400 .95rem var(--f-hand);font-variation-settings:"INFM" 70;color:var(--grafite)}
-.riso{background:var(--blu);overflow:hidden}
+.riso{background:var(--blu);overflow:hidden;isolation:isolate}
 .riso img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(1) contrast(1.25);mix-blend-mode:screen}
 .riso.pk{background:var(--rosa)}
 .hero .taped{transform:rotate(1.8deg)}
@@ -78,15 +78,16 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 @media (max-width:820px){.collage{min-height:0;display:grid;gap:1.6rem}.collage .taped{position:relative;width:auto;inset:auto}}
 .sh{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:baseline;justify-content:space-between;margin-bottom:1.6rem}
 .sh h2{font-size:clamp(2.2rem,6vw,3.4rem)}
-.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2.2rem 1.6rem}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:2.2rem 1.6rem}
 .gal a{text-decoration:none;display:block}
 .gal li:nth-child(3n+1) .taped{transform:rotate(-1.6deg)}
 .gal li:nth-child(3n+2) .taped{transform:rotate(1.1deg)}
 .gal li:nth-child(3n) .taped{transform:rotate(-.5deg)}
-.gal a:hover .riso img,.gal a:focus-visible .riso img{filter:none;mix-blend-mode:normal}
+.gal a:focus-visible .riso img{filter:none;mix-blend-mode:normal}
+@media (hover:hover){.gal a:hover .riso img{filter:none;mix-blend-mode:normal}}
 .vid-w{transform:rotate(-.6deg);max-width:900px}
 .vid{width:100%;aspect-ratio:16/9;background:var(--grafite)}
-.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2.4rem 2rem}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:2.4rem 2rem}
 .stories li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:1rem;align-items:start}
 .stories .riso img{aspect-ratio:1}
 .stories .taped{padding:6px;transform:rotate(-3deg)}
@@ -109,7 +110,7 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 .ill svg{width:100%;height:auto}
 .mapbox{position:relative;overflow:hidden;max-width:100%}
 .mapbox .stage{position:absolute;left:0;width:100%}
-.mapbox .paint{width:100%;height:auto;overflow:visible}
+.mapbox .paint{width:100%;height:auto;overflow:visible;isolation:isolate}
 .legend-q{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin-top:1rem;font:400 1rem var(--f-hand);font-variation-settings:"INFM" 80}
 .legend-q span{display:inline-flex;align-items:center;gap:.45rem}
 .legend-q i{width:1.1rem;height:.8rem;display:inline-block}
@@ -122,7 +123,7 @@ main.in{display:grid;gap:4.5rem;padding-block:1.5rem 4rem}
 a.qp:hover b,a.qp:focus-visible b{color:var(--rosa);text-decoration:underline}
 .chap{display:grid;gap:1.4rem}
 .chap h3{font:400 clamp(2.4rem,7vw,3.6rem)/1 var(--f-ti);color:var(--rosa)}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2.6rem 1.8rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:2.6rem 1.8rem}
 .cards a{text-decoration:none;display:grid;gap:.6rem}
 .cards li:nth-child(3n+1) .taped{transform:rotate(-1.4deg)}
 .cards li:nth-child(3n+2) .taped{transform:rotate(1.2deg)}
@@ -130,7 +131,10 @@ a.qp:hover b,a.qp:focus-visible b{color:var(--rosa);text-decoration:underline}
 .cards .c{font:400 1.7rem/1.05 var(--f-ti)}
 .cards .d{font-size:1rem;color:var(--matita)}
 .cards a:hover .c,.cards a:focus-visible .c{color:var(--blu);text-decoration:underline}
-.cards a:hover .riso img,.cards a:focus-visible .riso img{filter:none;mix-blend-mode:normal}
+.cards a:focus-visible .riso img{filter:none;mix-blend-mode:normal}
+@media (hover:hover){.cards a:hover .riso img{filter:none;mix-blend-mode:normal}}
+a{-webkit-tap-highlight-color:rgb(255 72 176 / .15)}
+@media (max-width:480px){.idx a{grid-template-columns:3ch minmax(0,1fr)}.idx .t{grid-column:2}.hero{gap:2rem}.stories li{grid-template-columns:72px minmax(0,1fr)}.taped::before{width:70px;left:calc(50% - 35px)}}
 .foot{padding-block:2rem 3rem;display:grid;gap:.6rem;font-size:1rem;color:var(--matita)}
 .foot .links{display:flex;flex-wrap:wrap;gap:.3rem 1.4rem}
 :focus-visible{outline:2px dashed var(--rosa);outline-offset:3px}
