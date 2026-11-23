@@ -18,20 +18,20 @@ img{height:auto}
 p,h1,h2,h3,figure,blockquote{margin:0}
 ul,ol{list-style:none;margin:0;padding:0}
 a{color:inherit}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
 .demo-bar{font:12px/1.4 ui-monospace,Menlo,monospace;display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;padding:.5rem max(16px,4vw)}
 .demo-bar a{text-decoration:underline}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-:root{--biglietto:#E6EBEE;--carta:#FBFCFC;--inchiostro:#101820;--grigio:#5E6A73;--filo:#B7C1C8;--segnale:#0A3D91;--led:#FFB81C;--tabellone:#1B1F23;--convalida:#7A1F5C;--verde:#23704A;
+:root{--biglietto:#E6EBEE;--carta:#FBFCFC;--inchiostro:#101820;--grigio:#5E6A73;--filo:#B7C1C8;--segnale:#0A3D91;--led:#FFB81C;--tabellone:#1B1F23;--tab-2:#262B30;--tab-3:#333A41;--tab-t:#8E969E;--convalida:#7A1F5C;--verde:#23704A;
  --f-dot:"Doto","B612 Mono",monospace;--f-tx:"Overpass",Arial,sans-serif;--f-dt:"B612 Mono",ui-monospace,monospace}
 body{background:var(--biglietto);color:var(--inchiostro);font:400 1.0625rem/1.55 var(--f-tx)}
-.demo-bar{background:var(--tabellone);color:#8E969E}
+.demo-bar{background:var(--tabellone);color:var(--tab-t)}
 .w{max-width:1160px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.dt{font-family:var(--f-dt)}
 .sign{background:var(--segnale);color:var(--biglietto)}
 .sign .w{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;align-items:center;padding-block:.9rem}
-.sign b{font:800 1.15rem var(--f-tx);letter-spacing:.01em}
+.sign b,.sign a.b{font:800 1.15rem var(--f-tx);letter-spacing:.01em;text-decoration:none}
 .sign span{font:400 .78rem var(--f-dt);letter-spacing:.08em}
 main{display:grid;gap:3.2rem;padding-block:2.4rem 4rem}
 h2{font:800 clamp(1.6rem,4vw,2.3rem)/1.1 var(--f-tx);margin:0}
@@ -46,23 +46,27 @@ h2{font:800 clamp(1.6rem,4vw,2.3rem)/1.1 var(--f-tx);margin:0}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.9rem 1.2rem}
 .kv div{display:grid;gap:.1rem}
 .kv b{font-weight:800;font-size:1.05rem}
+.kv b.big{font:900 2.4rem/1 var(--f-dot);color:var(--segnale)}
 .ticket .intro{max-width:60ch}
 .stub{border-left:2px dashed var(--filo);padding:1.4rem 1rem;display:grid;align-content:space-between;gap:1rem;font:400 .78rem/1.35 var(--f-dt)}
 .val{font:700 .82rem/1.25 var(--f-dt);color:var(--convalida);border:2px solid var(--convalida);padding:.3rem .45rem;transform:rotate(-5deg);justify-self:start;text-align:center}
 @media (max-width:620px){.ticket{grid-template-columns:minmax(0,1fr)}.ticket::before,.ticket::after{display:none}.stub{border-left:0;border-top:2px dashed var(--filo);grid-auto-flow:column;justify-content:space-between;align-items:center}}
 .board{background:var(--tabellone);color:var(--led);padding:1rem 1.1rem 1.2rem}
 .board-in{overflow-x:auto}
-.bh,.br{display:grid;grid-template-columns:5ch 4ch 4ch minmax(14ch,1fr) 20ch 11ch;gap:.2rem 1.1rem;min-width:760px;align-items:baseline}
-.bh{font:400 .66rem var(--f-dt);color:#8E969E;letter-spacing:.12em;padding-bottom:.45rem;border-bottom:1px solid #333A41}
-.br{font:900 1.2rem/2 var(--f-dot);border-bottom:1px solid #262B30;text-transform:uppercase;text-decoration:none}
-.br:hover,.br:focus-visible{background:#262B30}
+.bh,.br{display:grid;grid-template-columns:4ch 4ch 4ch minmax(14ch,1fr) 20ch 11ch;gap:.2rem 1.1rem;min-width:760px;align-items:baseline}
+.bh{font:400 .66rem var(--f-dt);color:var(--tab-t);letter-spacing:.12em;padding-bottom:.45rem;border-bottom:1px solid var(--tab-3)}
+.br{font:900 1.2rem/2 var(--f-dot);border-bottom:1px solid var(--tab-2);text-transform:uppercase;text-decoration:none}
+.br:hover,.br:focus-visible{background:var(--tab-2)}
 .br .ty{font:400 .78rem var(--f-dt);color:#C9D0D6;letter-spacing:.06em}
 .br .st{color:var(--biglietto)}
 .br.cur{color:#FFFFFF}
-.board .top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.7rem;font:400 .72rem var(--f-dt);color:#8E969E;letter-spacing:.1em}
+.board .top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.7rem;font:400 .72rem var(--f-dt);color:var(--tab-t);letter-spacing:.1em}
 .board .top b{font:900 1.3rem var(--f-dot);color:var(--led);letter-spacing:0}
-.board button{margin-top:.8rem;font:400 .72rem var(--f-dt);letter-spacing:.08em;background:none;color:#8E969E;border:1px solid #4A525A;padding:.35rem .7rem;cursor:pointer}
+.board .tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem}
+.board button{font:400 .72rem var(--f-dt);letter-spacing:.08em;background:none;color:var(--tab-t);border:1px solid #4A525A;padding:.35rem .7rem;cursor:pointer;text-transform:uppercase}
 .board button:hover,.board button:focus-visible{color:var(--led);border-color:var(--led)}
+.board button[aria-pressed="true"]{background:var(--led);color:var(--tabellone);border-color:var(--led)}
+.board #flap{margin-top:.8rem}
 .sh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:.5rem 1rem;border-bottom:2px solid var(--inchiostro);padding-bottom:.5rem;margin-bottom:1.2rem}
 .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
 .photos a{background:var(--carta);display:grid;text-decoration:none}
@@ -71,7 +75,7 @@ h2{font:800 clamp(1.6rem,4vw,2.3rem)/1.1 var(--f-tx);margin:0}
 .photos a:hover span,.photos a:focus-visible span{color:var(--segnale)}
 .vid{width:100%;aspect-ratio:16/9;background:var(--tabellone)}
 .stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
-.stories li{background:var(--carta);display:grid;grid-template-rows:auto 1fr;}
+.stories li{background:var(--carta);display:grid;grid-template-rows:auto 1fr}
 .stories .pax{display:flex;align-items:center;gap:.8rem;padding:.7rem .9rem;background:var(--segnale);color:var(--biglietto)}
 .stories .pax img{width:44px;height:44px;object-fit:cover}
 .stories .pax b{font:800 1rem var(--f-tx);display:block}
@@ -82,6 +86,21 @@ h2{font:800 clamp(1.6rem,4vw,2.3rem)/1.1 var(--f-tx);margin:0}
 .picto svg *{fill:none;stroke:var(--biglietto);stroke-width:2.25;stroke-linecap:square;stroke-linejoin:miter}
 .map{background:var(--carta);overflow-x:auto;padding:.5rem}
 .map svg{width:100%;min-width:760px;height:auto}
+.yr{font:900 clamp(2.4rem,7vw,3.6rem)/1 var(--f-dot);color:var(--segnale);margin:0 0 .8rem}
+.yrs{display:grid;gap:2.4rem}
+.tix{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.1rem}
+.tk{background:var(--carta);display:grid;grid-template-columns:minmax(0,1fr) 92px;text-decoration:none;position:relative}
+.tk::before,.tk::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--biglietto);right:92px;transform:translateX(50%)}
+.tk::before{top:-8px}.tk::after{bottom:-8px}
+.tk .a{display:grid;gap:.45rem;padding:.9rem 1rem;min-width:0}
+.tk .r{font:900 1.7rem/1 var(--f-dot);color:var(--segnale)}
+.tk .c{font:800 1.2rem/1.1 var(--f-tx)}
+.tk .m{font:400 .7rem var(--f-dt);letter-spacing:.06em;color:var(--grigio);text-transform:uppercase}
+.tk .s{border-left:2px dashed var(--filo);display:grid;grid-template-rows:1fr auto}
+.tk .s img{width:100%;height:100%;object-fit:cover;min-height:90px}
+.tk .s span{font:400 .62rem/1.3 var(--f-dt);padding:.4rem .45rem;letter-spacing:.04em}
+.tk:hover .c,.tk:focus-visible .c{color:var(--segnale);text-decoration:underline}
+.tk.cur{outline:3px solid var(--led);outline-offset:-3px}
 .foot{background:var(--segnale);color:var(--biglietto)}
 .foot .w{padding-block:1.6rem 2.4rem;display:grid;gap:.7rem;font:400 .82rem/1.5 var(--f-dt)}
 .foot .links{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem}
@@ -90,80 +109,81 @@ h2{font:800 clamp(1.6rem,4vw,2.3rem)/1.1 var(--f-tx);margin:0}
 </style>
 </head>
 <body>
-<div class="demo-bar"><span>DEMO · Sistema Partenze · non indicizzata</span><span><a href="../">Le tre demo</a> · <a href="../../praga-2026/">Pagina attuale</a></span></div>
+<div class="demo-bar"><span>DEMO · Sistema Partenze · non indicizzata</span><span><a href="../">Le tre demo</a> · <a href="praga-2026/">Demo Praga 2026</a> · <a href="../../">Home attuale</a></span></div>
 
 <header class="sign"><div class="w"><b>Erasmus+ · Istituto Comprensivo Pescara 6</b><span>PSR PESCARA · 11 TRATTE DAL 05/2024</span></div></header>
 <main class="w">
 <article class="ticket" aria-labelledby="t">
   <div class="main">
-    <span class="lbl">Carta d'imbarco · tratta 11 di 11</span>
-    <div class="route" aria-hidden="true">PSR <svg viewBox="0 0 44 24" aria-hidden="true"><path d="M2 12h36M30 4l8 8-8 8" fill="none" stroke="#0A3D91" stroke-width="3.5" stroke-linecap="square"/></svg> PRG</div>
-    <h1 id="t">Praga 2026</h1>
+    <span class="lbl">Abbonamento Erasmus+ · 2024–2026</span>
+    <div class="route" aria-hidden="true">PSR <svg viewBox="0 0 44 24" aria-hidden="true"><path d="M2 12h36M30 4l8 8-8 8" fill="none" stroke="#0A3D91" stroke-width="3.5" stroke-linecap="square"/></svg> EU</div>
+    <h1 id="t">Una sola Europa, in partenza da Pescara</h1>
+    <p class="intro">Il diario delle mobilità Erasmus+ dell&#x27;Istituto Comprensivo Pescara 6: foto, video e testimonianze di studenti e docenti in giro per l&#x27;Europa.</p>
     <div class="kv">
-      <div><span class="lbl">Paese</span><b>Repubblica Ceca</b></div>
-      <div><span class="lbl">Date</span><b>18–23 maggio 2026</b></div>
-      <div><span class="lbl">Tipo</span><b>Group Mobility</b></div>
-      <div><span class="lbl">Bagaglio</span><b>38 foto · 1 video · 9 storie</b></div>
+      <div><span class="lbl">Tratte</span><b class="big">11</b></div>
+      <div><span class="lbl">Paesi</span><b class="big">5</b></div>
+      <div><span class="lbl">Foto</span><b class="big">200</b></div>
+      <div><span class="lbl">Storie</span><b class="big">35</b></div>
     </div>
-    <p class="intro">Si torna a Praga, questa volta con gli studenti: laboratori a scuola, il Ponte Carlo, parchi e orti urbani, e famiglie ospitanti che restano nel cuore.</p>
     <div class="picto" aria-hidden="true">
 <svg viewBox="0 0 24 24"><path d="M5 3h14v13H5zM5 10h14M8 6h3M13 6h3M7 20l2-4M17 20l-2-4"/></svg>
 <svg viewBox="0 0 24 24"><path d="M3 9l9-5 9 5M5 9v10M19 9v10M3 19h18M9 19v-6h6v6"/></svg>
 <svg viewBox="0 0 24 24"><path d="M7 7V4h10v3M4 7h16v13H4zM4 12h16M10 12v2h4v-2"/></svg>
 <svg viewBox="0 0 24 24"><path d="M4 5h16v11H4zM9 20h6M12 16v4"/></svg></div>
   </div>
-  <div class="stub"><span>KA1<br>GROUP<br>MOBILITY</span><span class="val">CONVALIDATO<br>23·05·26</span><span>PSR→PRG<br>18–23 MAG 26</span></div>
+  <div class="stub"><span>KA1<br>2024–2026</span><span class="val">VALIDO<br>5 PAESI</span><span>PSR→EU<br>11 TRATTE</span></div>
 </article>
 
-<section aria-labelledby="g">
-  <div class="sh"><h2 id="g">Galleria</h2><span class="lbl">Tocca una foto per aprirla intera</span></div>
-  <div class="photos"><a href="../../praga-2026/photos/27.jpg"><img src="../../praga-2026/photos/thumbs/27.jpg" alt="Praga 2026, foto 27 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 27/38</span></span></a><a href="../../praga-2026/photos/03.jpg"><img src="../../praga-2026/photos/thumbs/03.jpg" alt="Praga 2026, foto 3 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 03/38</span></span></a><a href="../../praga-2026/photos/08.jpg"><img src="../../praga-2026/photos/thumbs/08.jpg" alt="Praga 2026, foto 8 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 08/38</span></span></a><a href="../../praga-2026/photos/12.jpg"><img src="../../praga-2026/photos/thumbs/12.jpg" alt="Praga 2026, foto 12 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 12/38</span></span></a><a href="../../praga-2026/photos/15.jpg"><img src="../../praga-2026/photos/thumbs/15.jpg" alt="Praga 2026, foto 15 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 15/38</span></span></a><a href="../../praga-2026/photos/19.jpg"><img src="../../praga-2026/photos/thumbs/19.jpg" alt="Praga 2026, foto 19 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 19/38</span></span></a><a href="../../praga-2026/photos/22.jpg"><img src="../../praga-2026/photos/thumbs/22.jpg" alt="Praga 2026, foto 22 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 22/38</span></span></a><a href="../../praga-2026/photos/30.jpg"><img src="../../praga-2026/photos/thumbs/30.jpg" alt="Praga 2026, foto 30 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 30/38</span></span></a><a href="../../praga-2026/photos/33.jpg"><img src="../../praga-2026/photos/thumbs/33.jpg" alt="Praga 2026, foto 33 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 33/38</span></span></a><a href="../../praga-2026/photos/36.jpg"><img src="../../praga-2026/photos/thumbs/36.jpg" alt="Praga 2026, foto 36 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 36/38</span></span></a><a href="../../praga-2026/photos/05.jpg"><img src="../../praga-2026/photos/thumbs/05.jpg" alt="Praga 2026, foto 5 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 05/38</span></span></a><a href="../../praga-2026/photos/10.jpg"><img src="../../praga-2026/photos/thumbs/10.jpg" alt="Praga 2026, foto 10 di 38" loading="lazy"><span><b>PSR→PRG</b><span>FOTO 10/38</span></span></a></div>
-</section>
-
-<section aria-labelledby="v">
-  <div class="sh"><h2 id="v">Il video</h2><span class="lbl">PSR→PRG · 18–23 MAG 26</span></div>
-  <video class="vid" controls playsinline preload="none" poster="../../praga-2026/poster.jpg" width="1920" height="1080"><source src="../../praga-2026/video.mp4" type="video/mp4"><a href="../../praga-2026/video.mp4">Scarica il video</a>.</video>
-</section>
-
-<section aria-labelledby="s">
-  <div class="sh"><h2 id="s">I passeggeri raccontano</h2><span class="lbl">Testi originali in inglese</span></div>
-  <ul class="stories"><li><div class="pax"><img src="../../praga-2026/people/maria-vittoria.jpg" alt="" loading="lazy"><div><b>Maria Vittoria</b><small>PASSEGGERO 01 · PSR→PRG</small></div></div><p>The Erasmus experience was unforgettable. It’s a journey where you grow, learn so many new things, and have unique experiences. It offers you the opportunity to improve your English, immerse yourself in a different culture and make new friends, even from outside Italy.</p></li><li><div class="pax"><img src="../../praga-2026/people/elisa.jpg" alt="" loading="lazy"><div><b>Elisa</b><small>PASSEGGERO 02 · PSR→PRG</small></div></div><p>I really enjoyed the Erasmus experience. It helped me to improve my English (by talking and listening), to make new friends, even if they’re really far away, to discover new cultures, and visit new cities. For example, even though my Erasmus was last year, the girl who hosted me and I still talk to each other. Like I said, I loved this experience and I hope to do it again.</p></li><li><div class="pax"><img src="../../praga-2026/people/simone.jpg" alt="" loading="lazy"><div><b>Simone</b><small>PASSEGGERO 03 · PSR→PRG</small></div></div><p>For me, the Erasmus experience was wonderful and meaningful, both for improving my language skills and for making new friends.</p></li><li><div class="pax"><img src="../../praga-2026/people/sofia.jpg" alt="" loading="lazy"><div><b>Sofia</b><small>PASSEGGERO 04 · PSR→PRG</small></div></div><p>Erasmus is an experience where I visited new places, discovered new things and where I improved my English skills. I met a lot of people but I didn’t make friends: I became a part of a big family.</p></li><li><div class="pax"><img src="../../praga-2026/people/giorgio-o.jpg" alt="" loading="lazy"><div><b>Giorgio O.</b><small>PASSEGGERO 05 · PSR→PRG</small></div></div><p>It was an incredible experience. I had the opportunity to travel in a new city that I enjoyed a lot, and I will always carry in my heart the fantastic family that hosted me. We’re still in touch and text each other often. I will remember this trip for the rest of my life.</p></li><li><div class="pax"><img src="../../praga-2026/people/aurora.jpg" alt="" loading="lazy"><div><b>Aurora</b><small>PASSEGGERO 06 · PSR→PRG</small></div></div><p>For me, the Erasmus experience was an opportunity to improve my English while making new friends, and it also gave me the chance to discover new places where I was warmly received.</p></li></ul>
-</section>
-
 <section aria-labelledby="b">
-  <div class="sh"><h2 id="b">Tutte le partenze</h2><span class="lbl">Aggiornato al 23.11.2026</span></div>
+  <div class="sh"><h2 id="b">Tabellone</h2><span class="lbl">Tocca una riga per aprire la mobilità</span></div>
   <div class="board">
-    <div class="top"><span>PARTENZE / DEPARTURES · PESCARA</span><b>23.11.26</b></div>
-    <div class="board-in"><div class="bh"><span>N.</span><span>DA</span><span>A</span><span>DESTINAZIONE</span><span>TIPO</span><span>STATO</span></div><a class="br" href="../../braga/"><span>01</span><span>PSR</span><span>OPO</span><span data-flap>BRAGA</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../thessaloniki/"><span>02</span><span>PSR</span><span>SKG</span><span data-flap>THESSALONIKI</span><span class="ty">JOB SHADOWING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../carlow/"><span>03</span><span>PSR</span><span>DUB</span><span data-flap>CARLOW</span><span class="ty">JOB SHADOWING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../elche/"><span>04</span><span>PSR</span><span>ALC</span><span data-flap>ELCHE 2025</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../dublin/"><span>05</span><span>PSR</span><span>DUB</span><span data-flap>DUBLIN</span><span class="ty">COURSES &AMP; TRAINING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../madeira/"><span>06</span><span>PSR</span><span>FNC</span><span data-flap>MADEIRA</span><span class="ty">COURSES &AMP; TRAINING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../benalua/"><span>07</span><span>PSR</span><span>GRX</span><span data-flap>BENALÚA</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../barcelona/"><span>08</span><span>PSR</span><span>BCN</span><span data-flap>BARCELONA</span><span class="ty">JOB SHADOWING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../praga/"><span>09</span><span>PSR</span><span>PRG</span><span data-flap>PRAGA 2025</span><span class="ty">STAFF MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" href="../../elche-2026/"><span>10</span><span>PSR</span><span>ALC</span><span data-flap>ELCHE 2026</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br cur" href="../../praga-2026/"><span>11</span><span>PSR</span><span>PRG</span><span data-flap>PRAGA 2026</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a></div>
+    <div class="top"><span>PARTENZE / DEPARTURES · PESCARA</span><b>23.11.26</b></div><div class="tabs" role="group" aria-label="Filtra per tipologia"><button type="button" data-filter="all" aria-pressed="true">Tutte</button><button type="button" data-filter="group" aria-pressed="false">Group Mobility</button><button type="button" data-filter="shadowing" aria-pressed="false">Job Shadowing</button><button type="button" data-filter="course" aria-pressed="false">Courses &amp; Training</button><button type="button" data-filter="staff" aria-pressed="false">Staff Mobility</button></div>
+    <div class="board-in"><div class="bh"><span>N.</span><span>DA</span><span>A</span><span>DESTINAZIONE</span><span>TIPO</span><span>STATO</span></div><a class="br" data-type="group" href="../../braga/"><span>01</span><span>PSR</span><span>OPO</span><span data-flap>BRAGA</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="shadowing" href="../../thessaloniki/"><span>02</span><span>PSR</span><span>SKG</span><span data-flap>THESSALONIKI</span><span class="ty">JOB SHADOWING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="shadowing" href="../../carlow/"><span>03</span><span>PSR</span><span>DUB</span><span data-flap>CARLOW</span><span class="ty">JOB SHADOWING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="group" href="../../elche/"><span>04</span><span>PSR</span><span>ALC</span><span data-flap>ELCHE 2025</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="course" href="../../dublin/"><span>05</span><span>PSR</span><span>DUB</span><span data-flap>DUBLIN</span><span class="ty">COURSES &AMP; TRAINING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="course" href="../../madeira/"><span>06</span><span>PSR</span><span>FNC</span><span data-flap>MADEIRA</span><span class="ty">COURSES &AMP; TRAINING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="group" href="../../benalua/"><span>07</span><span>PSR</span><span>GRX</span><span data-flap>BENALÚA</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="shadowing" href="../../barcelona/"><span>08</span><span>PSR</span><span>BCN</span><span data-flap>BARCELONA</span><span class="ty">JOB SHADOWING</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="staff" href="../../praga/"><span>09</span><span>PSR</span><span>PRG</span><span data-flap>PRAGA 2025</span><span class="ty">STAFF MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="group" href="../../elche-2026/"><span>10</span><span>PSR</span><span>ALC</span><span data-flap>ELCHE 2026</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a><a class="br" data-type="group" href="praga-2026/"><span>11</span><span>PSR</span><span>PRG</span><span data-flap>PRAGA 2026</span><span class="ty">GROUP MOBILITY</span><span class="st" data-flap>ARRIVATO</span></a></div>
     <button type="button" id="flap">AGGIORNA TABELLONE</button>
   </div>
 </section>
 
 <section aria-labelledby="l">
   <div class="sh"><h2 id="l">Schema di linea</h2><span class="lbl">Una linea per paese · tocca una fermata</span></div>
-  <div class="map"><svg viewBox="0 0 870 450" role="img" aria-label="Schema di linea delle mobilità: da Pescara una linea per ogni paese">
+  <div class="map"><svg viewBox="0 0 900 460" role="img" aria-label="Schema di linea delle mobilità: da Pescara una linea per ogni paese">
 <style>.sn{font:700 12px Overpass,sans-serif;fill:#101820}.sd{font:400 10px 'B612 Mono',monospace;fill:#5E6A73}.cn{font:400 10px 'B612 Mono',monospace;fill:#5E6A73;letter-spacing:.1em}.hb{font:800 14px Overpass,sans-serif;fill:#101820}a:hover .sn,a:focus .sn{fill:#0A3D91;text-decoration:underline}</style>
 <g fill="none" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter"><path d="M90 230 H130 L290 70 H510" stroke="#0A3D91"/><path d="M90 230 H130 L210 150 H430" stroke="#7A1F5C"/><path d="M90 230 H130 H350" stroke="#23704A"/><path d="M90 230 H130 L210 310 H730" stroke="#E39A00"/><path d="M90 230 H130 L290 390 H360" stroke="#101820"/></g>
-<g fill="#FBFCFC" stroke="#101820" stroke-width="3"><a href="../../carlow/"><circle cx="330" cy="70" r="8"/><text x="330" y="54" text-anchor="middle" class="sn">CARLOW</text><text x="330" y="96" text-anchor="middle" class="sd">DUB · 03/25</text></a><a href="../../dublin/"><circle cx="480" cy="70" r="8"/><text x="480" y="54" text-anchor="middle" class="sn">DUBLIN</text><text x="480" y="96" text-anchor="middle" class="sd">DUB · 07/25</text></a><a href="../../praga/"><circle cx="250" cy="150" r="8"/><text x="250" y="134" text-anchor="middle" class="sn">PRAGA 2025</text><text x="250" y="176" text-anchor="middle" class="sd">PRG · 12/25</text></a><a href="../../praga-2026/"><circle cx="400" cy="150" r="8"/><text x="400" y="134" text-anchor="middle" class="sn">PRAGA 2026</text><text x="400" y="176" text-anchor="middle" class="sd">PRG · 05/26</text></a><a href="../../braga/"><circle cx="170" cy="230" r="8"/><text x="170" y="214" text-anchor="middle" class="sn">BRAGA</text><text x="170" y="256" text-anchor="middle" class="sd">OPO · 05/24</text></a><a href="../../madeira/"><circle cx="320" cy="230" r="8"/><text x="320" y="214" text-anchor="middle" class="sn">MADEIRA</text><text x="320" y="256" text-anchor="middle" class="sd">FNC · 07/25</text></a><a href="../../elche/"><circle cx="250" cy="310" r="8"/><text x="250" y="294" text-anchor="middle" class="sn">ELCHE 2025</text><text x="250" y="336" text-anchor="middle" class="sd">ALC · 05/25</text></a><a href="../../benalua/"><circle cx="400" cy="310" r="8"/><text x="400" y="294" text-anchor="middle" class="sn">BENALÚA</text><text x="400" y="336" text-anchor="middle" class="sd">GRX · 10/25</text></a><a href="../../barcelona/"><circle cx="550" cy="310" r="8"/><text x="550" y="294" text-anchor="middle" class="sn">BARCELONA</text><text x="550" y="336" text-anchor="middle" class="sd">BCN · 11/25</text></a><a href="../../elche-2026/"><circle cx="700" cy="310" r="8"/><text x="700" y="294" text-anchor="middle" class="sn">ELCHE 2026</text><text x="700" y="336" text-anchor="middle" class="sd">ALC · 05/26</text></a><a href="../../thessaloniki/"><circle cx="330" cy="390" r="8"/><text x="330" y="374" text-anchor="middle" class="sn">THESSALONIKI</text><text x="330" y="416" text-anchor="middle" class="sd">SKG · 02/25</text></a></g>
+<g fill="#FBFCFC" stroke="#101820" stroke-width="3"><a href="../../carlow/"><circle cx="330" cy="70" r="8"/><text x="330" y="54" text-anchor="middle" class="sn">CARLOW</text><text x="330" y="96" text-anchor="middle" class="sd">DUB · 03/25</text></a><a href="../../dublin/"><circle cx="480" cy="70" r="8"/><text x="480" y="54" text-anchor="middle" class="sn">DUBLIN</text><text x="480" y="96" text-anchor="middle" class="sd">DUB · 07/25</text></a><a href="../../praga/"><circle cx="250" cy="150" r="8"/><text x="250" y="134" text-anchor="middle" class="sn">PRAGA 2025</text><text x="250" y="176" text-anchor="middle" class="sd">PRG · 12/25</text></a><a href="praga-2026/"><circle cx="400" cy="150" r="8"/><text x="400" y="134" text-anchor="middle" class="sn">PRAGA 2026</text><text x="400" y="176" text-anchor="middle" class="sd">PRG · 05/26</text></a><a href="../../braga/"><circle cx="170" cy="230" r="8"/><text x="170" y="214" text-anchor="middle" class="sn">BRAGA</text><text x="170" y="256" text-anchor="middle" class="sd">OPO · 05/24</text></a><a href="../../madeira/"><circle cx="320" cy="230" r="8"/><text x="320" y="214" text-anchor="middle" class="sn">MADEIRA</text><text x="320" y="256" text-anchor="middle" class="sd">FNC · 07/25</text></a><a href="../../elche/"><circle cx="250" cy="310" r="8"/><text x="250" y="294" text-anchor="middle" class="sn">ELCHE 2025</text><text x="250" y="336" text-anchor="middle" class="sd">ALC · 05/25</text></a><a href="../../benalua/"><circle cx="400" cy="310" r="8"/><text x="400" y="294" text-anchor="middle" class="sn">BENALÚA</text><text x="400" y="336" text-anchor="middle" class="sd">GRX · 10/25</text></a><a href="../../barcelona/"><circle cx="550" cy="310" r="8"/><text x="550" y="294" text-anchor="middle" class="sn">BARCELONA</text><text x="550" y="336" text-anchor="middle" class="sd">BCN · 11/25</text></a><a href="../../elche-2026/"><circle cx="700" cy="310" r="8"/><text x="700" y="294" text-anchor="middle" class="sn">ELCHE 2026</text><text x="700" y="336" text-anchor="middle" class="sd">ALC · 05/26</text></a><a href="../../thessaloniki/"><circle cx="330" cy="390" r="8"/><text x="330" y="374" text-anchor="middle" class="sn">THESSALONIKI</text><text x="330" y="416" text-anchor="middle" class="sd">SKG · 02/25</text></a></g>
 <rect x="76" y="216" width="28" height="28" fill="#FBFCFC" stroke="#101820" stroke-width="4"/>
 <text x="90" y="268" text-anchor="middle" class="hb">PESCARA</text><text x="90" y="282" text-anchor="middle" class="sd">PSR · CAPOLINEA</text>
-<text x="530" y="74" class="cn">IRLANDA</text><text x="450" y="154" class="cn">REPUBBLICA CECA</text><text x="370" y="234" class="cn">PORTOGALLO</text><text x="750" y="314" class="cn">SPAGNA</text><text x="380" y="394" class="cn">GRECIA</text></svg></div>
+<text x="522" y="74" class="cn">IRLANDA</text><text x="442" y="154" class="cn">REPUBBLICA CECA</text><text x="362" y="234" class="cn">PORTOGALLO</text><text x="742" y="314" class="cn">SPAGNA</text><text x="372" y="394" class="cn">GRECIA</text></svg></div>
+</section>
+
+<section aria-labelledby="k">
+  <div class="sh"><h2 id="k">I biglietti</h2><span class="lbl">Dalla più recente</span></div>
+  <div class="yrs"><section data-group aria-label="2026"><h3 class="yr">2026</h3><div class="tix"><a class="tk" data-type="group" href="praga-2026/"><div class="a"><span class="m">Tratta 11 · Group Mobility</span><span class="r">PSR→PRG</span><span class="c">Praga 2026</span><span class="m">Repubblica Ceca · 18–23 MAG 26</span></div><div class="s"><img src="../../praga-2026/photos/thumbs/27.jpg" alt="" loading="lazy"><span>38 FOTO · 1 VIDEO · 9 STORIE</span></div></a><a class="tk" data-type="group" href="../../elche-2026/"><div class="a"><span class="m">Tratta 10 · Group Mobility</span><span class="r">PSR→ALC</span><span class="c">Elche 2026</span><span class="m">Spagna · 13–17 MAG 26</span></div><div class="s"><img src="../../elche-2026/photos/thumbs/07.jpg" alt="" loading="lazy"><span>33 FOTO · 1 VIDEO · 6 STORIE</span></div></a></div></section><section data-group aria-label="2025"><h3 class="yr">2025</h3><div class="tix"><a class="tk" data-type="staff" href="../../praga/"><div class="a"><span class="m">Tratta 09 · Staff Mobility</span><span class="r">PSR→PRG</span><span class="c">Praga 2025</span><span class="m">Repubblica Ceca · 07–10 DIC 25</span></div><div class="s"><img src="../../praga/photos/thumbs/11.jpg" alt="" loading="lazy"><span>12 FOTO · 1 VIDEO · 2 STORIE</span></div></a><a class="tk" data-type="shadowing" href="../../barcelona/"><div class="a"><span class="m">Tratta 08 · Job Shadowing</span><span class="r">PSR→BCN</span><span class="c">Barcelona</span><span class="m">Spagna · 17–21 NOV 25</span></div><div class="s"><img src="../../barcelona/photos/thumbs/04.jpg" alt="" loading="lazy"><span>17 FOTO · 1 VIDEO · 2 STORIE</span></div></a><a class="tk" data-type="group" href="../../benalua/"><div class="a"><span class="m">Tratta 07 · Group Mobility</span><span class="r">PSR→GRX</span><span class="c">Benalúa</span><span class="m">Spagna · 19–24 OTT 25</span></div><div class="s"><img src="../../benalua/photos/thumbs/10.jpg" alt="" loading="lazy"><span>19 FOTO · 1 VIDEO · 6 STORIE</span></div></a><a class="tk" data-type="course" href="../../madeira/"><div class="a"><span class="m">Tratta 06 · Courses &amp; Training</span><span class="r">PSR→FNC</span><span class="c">Madeira</span><span class="m">Portogallo · 27 LUG–03 AGO 25</span></div><div class="s"><img src="../../madeira/photos/thumbs/02.jpg" alt="" loading="lazy"><span>7 FOTO</span></div></a><a class="tk" data-type="course" href="../../dublin/"><div class="a"><span class="m">Tratta 05 · Courses &amp; Training</span><span class="r">PSR→DUB</span><span class="c">Dublin</span><span class="m">Irlanda · 20 LUG–07 AGO 25</span></div><div class="s"><img src="../../dublin/photos/thumbs/10.jpg" alt="" loading="lazy"><span>16 FOTO · 4 STORIE</span></div></a><a class="tk" data-type="group" href="../../elche/"><div class="a"><span class="m">Tratta 04 · Group Mobility</span><span class="r">PSR→ALC</span><span class="c">Elche 2025</span><span class="m">Spagna · 19–23 MAG 25</span></div><div class="s"><img src="../../elche/photos/thumbs/11.jpg" alt="" loading="lazy"><span>21 FOTO · 1 VIDEO · 4 STORIE</span></div></a><a class="tk" data-type="shadowing" href="../../carlow/"><div class="a"><span class="m">Tratta 03 · Job Shadowing</span><span class="r">PSR→DUB</span><span class="c">Carlow</span><span class="m">Irlanda · 24–28 MAR 25</span></div><div class="s"><img src="../../carlow/photos/thumbs/03.jpg" alt="" loading="lazy"><span>16 FOTO · 1 VIDEO</span></div></a><a class="tk" data-type="shadowing" href="../../thessaloniki/"><div class="a"><span class="m">Tratta 02 · Job Shadowing</span><span class="r">PSR→SKG</span><span class="c">Thessaloniki</span><span class="m">Grecia · 24–28 FEB 25</span></div><div class="s"><img src="../../thessaloniki/photos/thumbs/01.jpg" alt="" loading="lazy"><span>14 FOTO · 1 VIDEO · 1 STORIA</span></div></a></div></section><section data-group aria-label="2024"><h3 class="yr">2024</h3><div class="tix"><a class="tk" data-type="group" href="../../braga/"><div class="a"><span class="m">Tratta 01 · Group Mobility</span><span class="r">PSR→OPO</span><span class="c">Braga</span><span class="m">Portogallo · 13–17 MAG 24</span></div><div class="s"><img src="../../braga/photos/thumbs/02.jpg" alt="" loading="lazy"><span>7 FOTO · 1 VIDEO · 1 STORIA</span></div></a></div></section></div>
 </section>
 </main>
 <footer class="foot"><div class="w"><p>Istituto Comprensivo Pescara 6 · Via Scarfoglio, 35 – 65129 Pescara · peic83200q@istruzione.it · tel. 08567422</p><div class="links"><a href="https://comprensivopescara6.edu.it/erasmus-plus/" target="_blank" rel="noopener">Erasmus+ al Pescara 6</a><a href="https://comprensivopescara6.edu.it/" target="_blank" rel="noopener">Sito della scuola</a><a href="https://erasmus-plus.ec.europa.eu/it" target="_blank" rel="noopener">Programma Erasmus+ (UE)</a></div></div></footer>
+
 <script>
+(function(){
+  var bs=[].slice.call(document.querySelectorAll('[data-filter]'));
+  bs.forEach(function(b){b.addEventListener('click',function(){
+    var f=b.dataset.filter;
+    bs.forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});
+    [].slice.call(document.querySelectorAll('[data-type]')).forEach(function(it){it.hidden=!(f==='all'||it.dataset.type===f);});
+    [].slice.call(document.querySelectorAll('[data-group]')).forEach(function(g){g.hidden=!g.querySelector('[data-type]:not([hidden])');});
+  });});
+})();
+</script><script>
 (function(){
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cells=[].slice.call(document.querySelectorAll('[data-flap]')),A='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   cells.forEach(function(c){c.dataset.f=c.textContent;});
   function flap(){ if(reduce)return;
-    cells.forEach(function(c,i){var t=c.dataset.f,f=0,n=12+(i%12)*2;clearInterval(c._t);
+    cells.forEach(function(c,i){if(c.closest('[hidden]'))return;var t=c.dataset.f,f=0,n=12+(i%12)*2;clearInterval(c._t);
       c._t=setInterval(function(){f++;var o='';for(var k=0;k<t.length;k++){var ch=t[k];o+=(ch===' '||f>n-(t.length-k)*.35)?ch:A[(Math.random()*A.length)|0];}
         c.textContent=o;if(f>=n){c.textContent=t;clearInterval(c._t);}},45);});}
-  document.getElementById('flap').addEventListener('click',flap);
+  var b=document.getElementById('flap'); if(b)b.addEventListener('click',flap);
+  [].slice.call(document.querySelectorAll('[data-filter]')).forEach(function(x){x.addEventListener('click',function(){setTimeout(flap,0);});});
   addEventListener('load',function(){setTimeout(flap,300);});
 })();
 </script>
-
 </body>
 </html>
